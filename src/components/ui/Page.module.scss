@@ -1,0 +1,32 @@
+$deltPurple: #7851a9;
+$white: #FFFFFF;
+
+
+.navigation {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 1rem;
+
+  .logo {
+    font-size: 1.5rem;
+    line-height: 150%;
+
+  }
+}
+.page {
+  background-color: $deltPurple;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
+
+  .content {
+    background-color: $white;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+}
