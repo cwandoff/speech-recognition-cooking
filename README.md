@@ -48,6 +48,10 @@ Google Sheets API as well as Notion API are expected to be used in order to read
 
 There is currently a Notion.so account that has been set up for a single user because a team account is not free
 
+Future implementation of the Notion.so API integration will be required for easy reading & writing of data. Information concerning this implementation can be found here: https://developers.notion.com/docs/getting-started
+
+Any Google Sheets implementation will involve using Google's developer API. Information concerning this implementation can be found here: https://developers.google.com/sheets/api/guides/values#node.js 
+
 ## Deploy
 
 Currently no deployment for this project
