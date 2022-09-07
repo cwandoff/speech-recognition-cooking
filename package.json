@@ -14,7 +14,9 @@
     "@mui/material": "^5.10.3",
     "@types/jest": "^29.0.0",
     "@types/react-dom": "^18.0.6",
-    "next": "latest",
+    "next": "^12.2.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "sass": "^1.54.6"
   },
   "devDependencies": {
