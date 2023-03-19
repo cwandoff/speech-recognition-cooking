@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "dtd-rush",
+  "private_key_id": "90d52cc8661f6d09a1289053b568021c9fd8a61d",
+  "private_key": "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC4dxQTL5roo2Ie\nsuy5xfnZ6+nBIJbitKov1Y2h75qcERLwAgzFPGXyOvPKOEq2il7AwOks1W2fGwo3\nI9mPfWTyU1f7K+1y2TbBHoUhKiZMC6LKIVjjw1qxua7uHkdDR/aSJliRU3l4Iw0H\n6185/nlUoRp8FHMmh5TvcY3Z97Yf02DSjBmbfo623QHTiCZmReXuM2T/YloEN/tQ\ntRf9+xQrzBI69Wg7kPFa/SL0hK+JKduN9SKsO6I4XStRYnYc/uK2cl2mK/6MEMTl\nyeV+e2H2hyZgEYZ1InieINPTRw5fTZx/HzRfn+dyL00YKaLz9hZgiDByMXTbi5nW\ntX00zZCdAgMBAAECggEAFTbUnzQ9W33WvfMT2HWVO2OvOV+3GpFudRvZMwNsQ4CP\nLfz+XPyKOOZgvSPmK8IUDZTh/B77gW3Jqfe8gI0KO/gryR4PK8MhUephoyPGzb4U\n1awqHd+MoZ3aKVZgGbO//qTcULJJ6PAXAo8mH3RNndb9RcHQUGENVtA3YRbk4hnp\noomYjS5Gvsmv2eb0KInnbmeSTi4rPG0NAuFBmBH22A7qxHmsmVNkPyv6ebMQqdk3\nOBBYBvyVoDy1SigGlRYO97/qJ41ZVrqyha0Cn5OnDNYrXAfzmfsR7u3teVcfHXXQ\nUcwAbcetTeSJF4LSPNcPPR1JyF35OXY3Cw9g41ShvQKBgQD8GqH/Oo17TQinpcxL\nI4JEaKGVjFY0JR0R0EOpb8mPVthoDwGsPpIRRAHtSXdc3Soy7MxRJsq+yK2/+TLn\n4rKEPfWL1E2eGp4DemOSlYk2YT+AUUyhp53ueYz+YP8AhNSKFhwTjaNgIyhLaFKL\nhpWu5XmnPAtpSaviy7EzhFvZLwKBgQC7UNq/W6Ydqzue1mFnUaOaLLcL82wE542I\nH80oROkJ8WOn4fWq+K6pqFArhfoetQmkcTbx8oSrbspwLBZlVEKnKfZ0S9KYJPTE\nmYHTc1AqjCtqnFyhnu2H3gBXOHOVL+7oGiH+0/Purl/t84DCUg7ZiCZQxamKYhpk\nBXdMNmvn8wKBgQCNPaqW4MoVU3JO4q/TRQCdrPUiYO6G5mgj68eMrQmC2ggCPK4W\nPzP8olpmA6vxBiO3Rj2uFYqvWqUlkcr4aWTUfBYOkhIuSwFON4qDvG2UXuWB0Yqa\nYtszmTvp5JPZSZH+DycJuWfX27qejML6UpuX0g7XJ+fIxDKdrLsJftUqlwKBgQCT\nywbdZzWZQSrId4Pg3lREaDWBE25OLFjKZ7UaqcxpUPF9W9bXMGG3cRrYTFx97/+M\npNtiaSRukvrdKJv/FU2F0aEoP08JRldt62S47sn42CHFe1vHFbt6sRn5t4vS0UAi\nF8Rs6NUVpLYB7FfSeqZG0prQrjTIAAGsm3d2RZY8KwKBgQDYNa6ppUz3ORqwt5SH\nCrITJ4vxXxYVlqhIjrerQZGhkK4YZYnxA7kuW25EiAhrovtypDzGMFpYl/gSEc/v\nS3Hy4mh/+xEPGaFw7DJ3YyrHDM2ia6oPniJ/DseYS/+jISMI+t05f1g8yfL4OvgU\nk5TmBEl8UnZCd0vgQQeQD/QwdA==",
+  "client_email": "delt-rush-control@dtd-rush.iam.gserviceaccount.com",
+  "client_id": "104036931311003542269",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/delt-rush-control%40dtd-rush.iam.gserviceaccount.com"
+}
