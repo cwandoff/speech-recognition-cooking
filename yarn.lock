@@ -1389,9 +1389,9 @@ jest-util@^29.5.0:
     picomatch "^2.2.3"
 
 js-sdsl@^4.1.4:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/js-sdsl/-/js-sdsl-4.3.0.tgz#aeefe32a451f7af88425b11fdb5f58c90ae1d711"
-  integrity sha512-mifzlm2+5nZ+lEcLJMoBK0/IH/bDg8XnJfd/Wq6IP+xoCjLZsTOnV2QpxlVbX9bMnkl5PdEjNtBJ9Cj1NjifhQ==
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/js-sdsl/-/js-sdsl-4.4.0.tgz#8b437dbe642daa95760400b602378ed8ffea8430"
+  integrity sha512-FfVSdx6pJ41Oa+CF7RDaFmTnCaFhua+SNYQX74riGOpl96x+2jQCqEfQ2bnXu/5DPCqlRuiqyvTJM0Qjz26IVg==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -1707,7 +1707,7 @@ react-is@^18.0.0, react-is@^18.2.0:
 
 react-speech-kit@^3.0.1:
   version "3.0.1"
-  resolved "https://registry.yarnpkg.com/react-speech-kit/-/react-speech-kit-3.0.1.tgz#8bd936adfe064be1c5a07e2992dfdfd772e80d14"
+  resolved "https://registry.npmjs.org/react-speech-kit/-/react-speech-kit-3.0.1.tgz"
   integrity sha512-MXNOciISanhmnxpHJkBOev3M3NPDpW1T7nTc/eGw5pO9cXpoUccRxZkmr/IlpTPbPEneDNeTmbwri/YweyctZg==
 
 react-speech-recognition@^3.10.0:
@@ -1717,7 +1717,7 @@ react-speech-recognition@^3.10.0:
 
 react-speech@^1.0.2:
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-speech/-/react-speech-1.0.2.tgz#e5200c6705e44cd9b4b55b218eb267e85d44f86c"
+  resolved "https://registry.npmjs.org/react-speech/-/react-speech-1.0.2.tgz"
   integrity sha512-z/HgICAqmWIwXbQnxVDm0CMgu6MlZzkVtp37F7kd9vPKSJw8Pcv+f2wFy5kOwTO5m5BOD9awnCsBa5J9XovPJA==
   dependencies:
     immutability-helper "^3.0.1"
