@@ -78,6 +78,22 @@ const RecipeHelperBody = (_props: any) => {
       });
 
 
+    //handle viewing next instruction
+    function getInstructionIndex() {
+        let currInstructIndex = 0;
+        while(currentInstruction != currentRecipe?.instructions[0]) {
+            if (currentRecipe?.instructions.length == null)
+            return 0; //error the recipe doesn't have instructions
+            else if (currentInstruction == currentRecipe.instructions[currInstructIndex]) //if the instructions match
+            break;
+
+            currInstructIndex++;
+        }
+
+        return currInstructIndex;
+    }
+
+
     const [message, setMessage] = useState("");
     const [currentTranscript, setCurrentTranscript] = useState("");
     const [currentRecipe, setCurrentRecipe] = useState<Recipe | null>(null);
@@ -85,29 +101,59 @@ const RecipeHelperBody = (_props: any) => {
     const [currentInstruction, setCurrentInstruction] = useState("");
 
     const handleFilter = (recipeType: string) => {
-
+        // recipeType = ' '+recipeType;
         const searched = []
+
         for (const r of recipes) {
             if (r.title != undefined) {
-                if (r.title.includes(recipeType)) {
+
+                // let str1 = r.title.toLowerCase()
+                // let str2 = recipeType.toLowerCase()
+                // let rtIndex = 0;
+                // let matchLen = 0;
+
+                // for (const l of str1) {
+                //     if (l == str2.charAt(rtIndex)) {
+                //         matchLen++;
+                //         rtIndex++;
+                //     }
+
+                //     if (matchLen == str1.length)
+                //     searched.push(r);
+
+                    
+                // }
+
+
+                // if( r.title.search(recipeType) >= 0)
+                // searched.push(r);
+
+
+                if (r.title.includes(recipeType) || r.title.search(recipeType) >= 0) 
                     searched.push(r);
-              }
+
             }
         }
         setFiltered(searched);
         if (searched.length > 0){
             setCurrentRecipe(null); //clears current one
-            speech.synthesis(`I found a ${recipeType} recipe`, 'en-US') // speech synthesis module
+            speech.synthesis(`I found a ${searched[0].title} recipe, swipe for other ${recipeType} recipes`, 'en-US') // speech synthesis module
             setCurrentRecipe(searched[0]);
 
-            if (searched[0].instructions != undefined)
-            setCurrentInstruction(searched[0].instructions[0])
+            if (searched[0].instructions != null)
+            setCurrentInstruction(searched[0].instructions[0]);
+
+            firstStep();
         }
         else
         speech.synthesis(`No ${recipeType} recipe found.`, 'en-US') // speech synthesis module
 
     }
  
+     const firstStep = () => {
+        speech.synthesis(`The first step is  ${currentRecipe?.instructions[0]} `, 'en-US') // speech synthesis module
+        return null;
+    }
     const handleStart = (recipeName: string) => {
 
         if (recipeExists(recipeName)) {
@@ -130,11 +176,22 @@ const RecipeHelperBody = (_props: any) => {
             speech.synthesis("No recipe has been started yet", 'en-US') // speech synthesis module
             setMessage("No recipe has been started yet");
         } else {
-            speech.synthesis("the next step is", 'en-US') // speech synthesis module
+            // speech.synthesis("the next step is", 'en-US') // speech synthesis module
             setMessage("Now showing the next step")
             /** 
              * GO TO NEXT STEP IN THE RECIPE
              */
+            let ind = getInstructionIndex();
+
+            if (ind < currentRecipe.instructions.length - 1) {
+                setCurrentInstruction(currentRecipe.instructions[ind+1]);
+                speech.synthesis(`The next step is ${currentInstruction} `, 'en-US') // speech synthesis module
+                setMessage("Now showing the next step") 
+            }
+            else 
+            setMessage("this is the last step") 
+            speech.synthesis("You're done! this is the last step", 'en-US') // speech synthesis module
+
         }
     }
 
@@ -247,7 +304,15 @@ const RecipeHelperBody = (_props: any) => {
             callback: (recipe: any) => handleStart(recipe)
         },
         {
-            command: 'Next (step)',
+            command: '(what\'s the) next (step)',
+            callback: () => handleNext()
+        },
+        {
+            command: '(what\'s the) first step',
+            callback: () => firstStep()
+        },
+        {
+            command: '(what\'s) after that (step)',
             callback: () => handleNext()
         },
         {
