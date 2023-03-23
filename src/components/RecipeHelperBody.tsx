@@ -25,16 +25,15 @@ const recipes = Object.values(recipesData).map((val) => {
 
 })
 
-
-for(const r of recipes){
-    console.log(r.instructions[0]);
-}
+// for(const r of recipes){
+//     console.log(r.instructions[0]);
+// }
 
 const RecipeHelperBody = (_props: any) => {
     const [message, setMessage] = useState("");
     const [currentTranscript, setCurrentTranscript] = useState("");
     const [currentRecipe, setCurrentRecipe] = useState<Recipe | null>(null);
-    const [filtered, setFiltered] = useState<Recipe[]>([]);
+    const [filtered, setFiltered] = useState<Recipe[]>(recipes);
     const [currentInstruction, setCurrentInstruction] = useState("");
 
 
@@ -60,7 +59,6 @@ const RecipeHelperBody = (_props: any) => {
             setCurrentRecipe(getRecipe(recipeName));
             setMessage(`Starting recipe: ${currentRecipe?.title}`);
         }
-
     }
 
     const handleNext = () => {
@@ -83,7 +81,6 @@ const RecipeHelperBody = (_props: any) => {
             setCurrentRecipe(null);
             //POTENTIAL AUDIO OUTPUT
         }
-
     }
 
     const recipeExists = (recipeName: string) => {
@@ -130,12 +127,13 @@ const RecipeHelperBody = (_props: any) => {
             callback: () => handleNext()
         },
         {
-            command: 'End (recipe)',
-            callback: () => handleEnd()
+            command: 'I am done',
+            callback: () => handleEnd(),
+            
         },
         {
             command: 'reset',
-            callback: () => resetTranscript()
+            callback: () => resetTranscript(),
         },
     ];
 
@@ -147,7 +145,7 @@ const RecipeHelperBody = (_props: any) => {
         <div>
 
             <p>{message}</p>
-            <p>{currentTranscript}</p>
+            <p>{transcript}</p>
 
         </div>
     );
