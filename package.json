@@ -21,6 +21,7 @@
     "react-speech": "^1.0.2",
     "react-speech-kit": "^3.0.1",
     "react-speech-recognition": "^3.10.0",
+    "react-swipeable": "^7.0.0",
     "regenerator-runtime": "^0.13.11",
     "sass": "^1.54.6",
     "speech-js": "^0.1.1"
