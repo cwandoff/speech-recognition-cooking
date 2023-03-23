@@ -32,12 +32,25 @@ interface Recipe {
     liked: boolean;
 }
 
-const recipes = Object.values(recipesData).map((val) => {
-    
+
+const recipes = Object.values(recipesData).map((val) => { //fixed current instruction
+    var cleanInstructions = new Array(); 
+    let index = 0;
+    let step = "";
+
+    while (val.instructions!= null  && index < val.instructions.length) {
+        step = step + val.instructions[index];
+        if (val.instructions[index] == '.'){
+            cleanInstructions.push(step); //adds as it's own sentence
+            step = "";
+        }
+        index++;
+    }
     return ({
         title: val.title,
         ingredients: val.ingredients,
-        instructions: val.instructions,
+        // instructions: val.instructions,
+        instructions: cleanInstructions,
         picture_link: val.picture_link,
         liked: false,
     } as Recipe)
@@ -45,21 +58,23 @@ const recipes = Object.values(recipesData).map((val) => {
 })
 
 
+
+
 const RecipeHelperBody = (_props: any) => {
 
     //implement swiper https://www.npmjs.com/package/react-swipeable
     const handlers = useSwipeable({
         onSwiped: (eventData) => console.log("User Swiped!", eventData),
-        onSwipedUp: () => getNextRecipe(recipes,currentRecipe?.title), //change it to the recipe on the left or right
-//         swipeDuration: 250, // only swipes under 250ms will trigger callbacks
+        // onSwipedUp: () => getNextRecipe(recipes,currentRecipe?.title), //change it to the recipe on the left or right
+        swipeDuration: 500, // only swipes under 250ms will trigger callbacks
 //         onSwiped: (SwipeEventData) => ({console.log("30")}),
         onSwipedLeft: () => getNextRecipe((filtered == null ?  recipes : filtered),currentRecipe?.title),   // After LEFT swipe  (SwipeEventData) => void
-        onSwipedRight: () => getPrevRecipe(filtered == null ?  recipes : filtered,currentRecipe?.title),   // After RIGHT swipe  (SwipeEventData) => void
-//   onSwipedUp,     // After UP swipe    (SwipeEventData) => void
-//   onSwipedDown,   // After DOWN swipe  (SwipeEventData) => void
-//   onSwipeStart,   // Start of swipe    (SwipeEventData) => void *see details*
-//   onSwiping,      // During swiping    (SwipeEventData) => void
-//   onTap,          // After a tap       ({ event }) => void
+        onSwipedRight: () => getPrevRecipe((filtered == null ?  recipes : filtered),currentRecipe?.title),   // After RIGHT swipe  (SwipeEventData) => void
+    //   onSwipedUp,     // After UP swipe    (SwipeEventData) => void
+    //   onSwipedDown,   // After DOWN swipe  (SwipeEventData) => void
+    //   onSwipeStart,   // Start of swipe    (SwipeEventData) => void *see details*
+    //   onSwiping,      // During swiping    (SwipeEventData) => void
+    //   onTap,          // After a tap       ({ event }) => void
       });
 
 
@@ -76,7 +91,7 @@ const RecipeHelperBody = (_props: any) => {
             if (r.title != undefined) {
                 if (r.title.includes(recipeType)) {
                     searched.push(r);
-                }
+              }
             }
         }
         setFiltered(searched);
@@ -84,16 +99,27 @@ const RecipeHelperBody = (_props: any) => {
             setCurrentRecipe(null); //clears current one
             speech.synthesis(`I found a ${recipeType} recipe`, 'en-US') // speech synthesis module
             setCurrentRecipe(searched[0]);
+
+            if (searched[0].instructions != undefined)
+            setCurrentInstruction(searched[0].instructions[0])
         }
         else
         speech.synthesis(`No ${recipeType} recipe found.`, 'en-US') // speech synthesis module
 
     }
-
+ 
     const handleStart = (recipeName: string) => {
 
         if (recipeExists(recipeName)) {
             setCurrentRecipe(getRecipe(recipeName));
+
+            if (currentRecipe != null) {
+            if(currentRecipe.instructions != null)
+            setCurrentInstruction(currentRecipe.instructions[0])    
+            }
+
+
+
             setMessage(`Starting recipe: ${currentRecipe?.title}`);
         }
     }
@@ -193,7 +219,7 @@ const RecipeHelperBody = (_props: any) => {
         const getPrevRecipe = (recipeArr: Recipe[],recipeName?: string) => {
 
             let org_index = getRecipeIndex(recipeArr,recipeName);
-             console.log(currentRecipe);
+            //  console.log(currentRecipe);
              if (org_index > 0){
                  setCurrentRecipe(recipeArr[org_index-1]); //changes curr recipe to nexy recipe
                  
@@ -204,7 +230,7 @@ const RecipeHelperBody = (_props: any) => {
                 setMessage("There is no recipe to the left.")
              }
      
-             console.log(currentRecipe);
+            //  console.log(currentRecipe);
              return null
          }
     const commands = [
@@ -250,6 +276,7 @@ const RecipeHelperBody = (_props: any) => {
     return (
         <div>
             <p>{myRecipe.title}</p>
+            <p>{currentInstruction}</p>
             <p>{message}</p>
             <p>{transcript}</p>
     
@@ -279,7 +306,7 @@ const RecipeHelperBody = (_props: any) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={()=>{myRecipe.liked = !myRecipe.liked, console.log(myRecipe.liked)}} size="small">Like this Recipe!</Button>
+        {/* <Button onClick={()=>{myRecipe.liked = !myRecipe.liked, console.log(myRecipe.liked)}} size="small">Like this Recipe!</Button> */}
       </CardActions>
     </Card>
     </div>
