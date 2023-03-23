@@ -18,11 +18,13 @@ import {Card, Container, Grid, GridListTileBar, Grow, Radio, Typography} from "@
 
 import Box from '@mui/material/Box';
 // import Card from '@mui/material/Card';
+// import Typography from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { useSwipeable } from "react-swipeable";
 // import Typography from '@mui/material/Typography';
+import { TextField } from '@material-ui/core';
 
 interface Recipe {
     title: string;
@@ -58,8 +60,6 @@ const recipes = Object.values(recipesData).map((val) => { //fixed current instru
 })
 
 
-
-
 const RecipeHelperBody = (_props: any) => {
 
     //implement swiper https://www.npmjs.com/package/react-swipeable
@@ -93,6 +93,7 @@ const RecipeHelperBody = (_props: any) => {
         return currInstructIndex;
     }
 
+    const [postData, setPostData] = useState("");
 
     const [message, setMessage] = useState("");
     const [currentTranscript, setCurrentTranscript] = useState("");
@@ -129,7 +130,7 @@ const RecipeHelperBody = (_props: any) => {
                 // searched.push(r);
 
 
-                if (r.title.includes(recipeType) || r.title.search(recipeType) >= 0) 
+                if (r.title.includes(recipeType) || r.title.search(recipeType) >= 0 || r.title.includes(' '  + recipeType + ' ')) 
                     searched.push(r);
 
             }
@@ -316,7 +317,7 @@ const RecipeHelperBody = (_props: any) => {
             callback: () => handleNext()
         },
         {
-            command: "I'm done",
+            command: "I'm done (cooking)(baking)",
             callback: () => handleEnd(),
             
         },
@@ -338,19 +339,36 @@ const RecipeHelperBody = (_props: any) => {
     }  
 
     SpeechRecognition.startListening({ continuous: true });
+
+    const clear = () => {
+    setPostData("");
+    };
+
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    clear();
+    }
+          
+
     return (
         <div>
-            <p>{myRecipe.title}</p>
             <p>{currentInstruction}</p>
             <p>{message}</p>
             <p>{transcript}</p>
     
     {/* <div {...handlers}> You can swipe here </div> */}
+            <form autoComplete="off" noValidate  onSubmit={handleSubmit}>
+         <Typography variant="h6"> {'Find a Recipe'}</Typography>
+          <TextField name="recipe title" variant="outlined" label="recipe title" fullWidth value={postData} onChange={(e) => setPostData(e.target.value)} />
+           <Button variant="contained" color="primary" size="small" onClick={() => handleFilter(postData)} fullWidth>Search</Button>
+           <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
+         </form>
+
     <div {...handlers}>
     <Typography variant="body" component="div" align="center"> 
     Swipe left & right to see other recipes!
         </Typography> 
-    <Card sx={{ maxWidth: 600}}>
+    <Card maxWidth = '600' align = 'center'>
       <CardContent>
         <Typography variant='h3' gutterBottom>
         </Typography>
