@@ -196,6 +196,8 @@ const RecipeHelperBody = (_props: any) => {
              console.log(currentRecipe);
              if (org_index > 0){
                  setCurrentRecipe(recipeArr[org_index-1]); //changes curr recipe to nexy recipe
+                 
+                 if(recipeArr[org_index-1].instructions != null)
                  setCurrentInstruction(recipeArr[org_index-1].instructions[0]); //changes curr instruc to first of recipe
              }
              else {
@@ -288,4 +290,3 @@ const RecipeHelperBody = (_props: any) => {
 
 
 export default RecipeHelperBody;
-
