@@ -13,10 +13,11 @@ import speech from 'speech-js';
 import fillRecipes from "./recipeCards.js";
 
 //for cards
-import {Card, Container, Grid, GridListTileBar, Grow, Radio, Typography} from "@material-ui/core";
+import { Card, Container, Grid, GridListTileBar, Grow, Radio, Typography } from "@material-ui/core";
 // import React, {Component,useEffect, useState} from 'react';
 
 import Box from '@mui/material/Box';
+// import Typography from '@mui/material/Typography'
 // import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -34,13 +35,13 @@ interface Recipe {
 
 
 const recipes = Object.values(recipesData).map((val) => { //fixed current instruction
-    var cleanInstructions = new Array(); 
+    var cleanInstructions = new Array();
     let index = 0;
     let step = "";
 
-    while (val.instructions!= null  && index < val.instructions.length) {
+    while (val.instructions != null && index < val.instructions.length) {
         step = step + val.instructions[index];
-        if (val.instructions[index] == '.'){
+        if (val.instructions[index] == '.') {
             cleanInstructions.push(step); //adds as it's own sentence
             step = "";
         }
@@ -67,25 +68,25 @@ const RecipeHelperBody = (_props: any) => {
         onSwiped: (eventData) => console.log("User Swiped!", eventData),
         // onSwipedUp: () => getNextRecipe(recipes,currentRecipe?.title), //change it to the recipe on the left or right
         swipeDuration: 500, // only swipes under 250ms will trigger callbacks
-//         onSwiped: (SwipeEventData) => ({console.log("30")}),
-        onSwipedLeft: () => getNextRecipe((filtered == null ?  recipes : filtered),currentRecipe?.title),   // After LEFT swipe  (SwipeEventData) => void
-        onSwipedRight: () => getPrevRecipe((filtered == null ?  recipes : filtered),currentRecipe?.title),   // After RIGHT swipe  (SwipeEventData) => void
-    //   onSwipedUp,     // After UP swipe    (SwipeEventData) => void
-    //   onSwipedDown,   // After DOWN swipe  (SwipeEventData) => void
-    //   onSwipeStart,   // Start of swipe    (SwipeEventData) => void *see details*
-    //   onSwiping,      // During swiping    (SwipeEventData) => void
-    //   onTap,          // After a tap       ({ event }) => void
-      });
+        //         onSwiped: (SwipeEventData) => ({console.log("30")}),
+        onSwipedLeft: () => getNextRecipe((filtered == null ? recipes : filtered), currentRecipe?.title),   // After LEFT swipe  (SwipeEventData) => void
+        onSwipedRight: () => getPrevRecipe((filtered == null ? recipes : filtered), currentRecipe?.title),   // After RIGHT swipe  (SwipeEventData) => void
+        //   onSwipedUp,     // After UP swipe    (SwipeEventData) => void
+        //   onSwipedDown,   // After DOWN swipe  (SwipeEventData) => void
+        //   onSwipeStart,   // Start of swipe    (SwipeEventData) => void *see details*
+        //   onSwiping,      // During swiping    (SwipeEventData) => void
+        //   onTap,          // After a tap       ({ event }) => void
+    });
 
 
     //handle viewing next instruction
     function getInstructionIndex() {
         let currInstructIndex = 0;
-        while(currentInstruction != currentRecipe?.instructions[0]) {
+        while (currentInstruction != currentRecipe?.instructions[0]) {
             if (currentRecipe?.instructions.length == null)
-            return 0; //error the recipe doesn't have instructions
+                return 0; //error the recipe doesn't have instructions
             else if (currentInstruction == currentRecipe.instructions[currInstructIndex]) //if the instructions match
-            break;
+                break;
 
             currInstructIndex++;
         }
@@ -106,51 +107,28 @@ const RecipeHelperBody = (_props: any) => {
 
         for (const r of recipes) {
             if (r.title != undefined) {
-
-                // let str1 = r.title.toLowerCase()
-                // let str2 = recipeType.toLowerCase()
-                // let rtIndex = 0;
-                // let matchLen = 0;
-
-                // for (const l of str1) {
-                //     if (l == str2.charAt(rtIndex)) {
-                //         matchLen++;
-                //         rtIndex++;
-                //     }
-
-                //     if (matchLen == str1.length)
-                //     searched.push(r);
-
-                    
-                // }
-
-
-                // if( r.title.search(recipeType) >= 0)
-                // searched.push(r);
-
-
-                if (r.title.includes(recipeType) || r.title.search(recipeType) >= 0) 
-                    searched.push(r);
-
+                if(r.title.toLowerCase().indexOf(recipeType) >= 0){
+                    searched.push(r)
+                }
             }
         }
         setFiltered(searched);
-        if (searched.length > 0){
+        if (searched.length > 0) {
             setCurrentRecipe(null); //clears current one
             speech.synthesis(`I found a ${searched[0].title} recipe, swipe for other ${recipeType} recipes`, 'en-US') // speech synthesis module
             setCurrentRecipe(searched[0]);
 
             if (searched[0].instructions != null)
-            setCurrentInstruction(searched[0].instructions[0]);
+                setCurrentInstruction(searched[0].instructions[0]);
 
             firstStep();
         }
         else
-        speech.synthesis(`No ${recipeType} recipe found.`, 'en-US') // speech synthesis module
+            speech.synthesis(`No ${recipeType} recipe found.`, 'en-US') // speech synthesis module
 
     }
- 
-     const firstStep = () => {
+
+    const firstStep = () => {
         speech.synthesis(`The first step is  ${currentRecipe?.instructions[0]} `, 'en-US') // speech synthesis module
         return null;
     }
@@ -160,8 +138,8 @@ const RecipeHelperBody = (_props: any) => {
             setCurrentRecipe(getRecipe(recipeName));
 
             if (currentRecipe != null) {
-            if(currentRecipe.instructions != null)
-            setCurrentInstruction(currentRecipe.instructions[0])    
+                if (currentRecipe.instructions != null)
+                    setCurrentInstruction(currentRecipe.instructions[0])
             }
 
 
@@ -184,12 +162,12 @@ const RecipeHelperBody = (_props: any) => {
             let ind = getInstructionIndex();
 
             if (ind < currentRecipe.instructions.length - 1) {
-                setCurrentInstruction(currentRecipe.instructions[ind+1]);
+                setCurrentInstruction(currentRecipe.instructions[ind + 1]);
                 speech.synthesis(`The next step is ${currentInstruction} `, 'en-US') // speech synthesis module
-                setMessage("Now showing the next step") 
+                setMessage("Now showing the next step")
             }
-            else 
-            setMessage("this is the last step") 
+            else
+                setMessage("this is the last step")
             speech.synthesis("You're done! this is the last step", 'en-US') // speech synthesis module
 
         }
@@ -240,56 +218,56 @@ const RecipeHelperBody = (_props: any) => {
 
     //find recipe to the left of current filtered recipies
 
-    const getRecipeIndex = (recipeArr: Recipe[],recipeName?: string) => {
-       let org_index = 0;
+    const getRecipeIndex = (recipeArr: Recipe[], recipeName?: string) => {
+        let org_index = 0;
 
-       for (const r of recipeArr) {
-           if (r.title != undefined && recipeName != null) {
-               if (r.title == recipeName) {
-                   break; //found the current recipe
-               }
-           }
-           org_index++;
-       }
-       return org_index;
+        for (const r of recipeArr) {
+            if (r.title != undefined && recipeName != null) {
+                if (r.title == recipeName) {
+                    break; //found the current recipe
+                }
+            }
+            org_index++;
+        }
+        return org_index;
     }
 
-    
-    //find recipe to the right of current filtered recipes
-    const getNextRecipe = (recipeArr: Recipe[],recipeName?: string) => {
 
-       let org_index = getRecipeIndex(recipeArr,recipeName);
+    //find recipe to the right of current filtered recipes
+    const getNextRecipe = (recipeArr: Recipe[], recipeName?: string) => {
+
+        let org_index = getRecipeIndex(recipeArr, recipeName);
         console.log(currentRecipe);
-        if (org_index < recipeArr.length - 1){
-            setCurrentRecipe(recipeArr[org_index+1]); //changes curr recipe to nexy recipe
-            setCurrentInstruction(recipeArr[org_index+1].instructions[0]); //changes curr instruc to first of recipe
+        if (org_index < recipeArr.length - 1) {
+            setCurrentRecipe(recipeArr[org_index + 1]); //changes curr recipe to nexy recipe
+            setCurrentInstruction(recipeArr[org_index + 1].instructions[0]); //changes curr instruc to first of recipe
         }
-        else 
-        setMessage("There is no recipe to the left.")
+        else
+            setMessage("There is no recipe to the left.")
 
 
         console.log(currentRecipe);
         return null
     }
 
-        //find recipe to the left of current filtered recipes
-        const getPrevRecipe = (recipeArr: Recipe[],recipeName?: string) => {
+    //find recipe to the left of current filtered recipes
+    const getPrevRecipe = (recipeArr: Recipe[], recipeName?: string) => {
 
-            let org_index = getRecipeIndex(recipeArr,recipeName);
-            //  console.log(currentRecipe);
-             if (org_index > 0){
-                 setCurrentRecipe(recipeArr[org_index-1]); //changes curr recipe to nexy recipe
-                 
-                 if(recipeArr[org_index-1].instructions != null)
-                 setCurrentInstruction(recipeArr[org_index-1].instructions[0]); //changes curr instruc to first of recipe
-             }
-             else {
-                setMessage("There is no recipe to the left.")
-             }
-     
-            //  console.log(currentRecipe);
-             return null
-         }
+        let org_index = getRecipeIndex(recipeArr, recipeName);
+        //  console.log(currentRecipe);
+        if (org_index > 0) {
+            setCurrentRecipe(recipeArr[org_index - 1]); //changes curr recipe to nexy recipe
+
+            if (recipeArr[org_index - 1].instructions != null)
+                setCurrentInstruction(recipeArr[org_index - 1].instructions[0]); //changes curr instruc to first of recipe
+        }
+        else {
+            setMessage("There is no recipe to the left.")
+        }
+
+        //  console.log(currentRecipe);
+        return null
+    }
     const commands = [
         { //duplicate of show me
             command: 'Find me a :recipeType recipe',
@@ -318,7 +296,7 @@ const RecipeHelperBody = (_props: any) => {
         {
             command: "I'm done",
             callback: () => handleEnd(),
-            
+
         },
         {
             command: 'reset',
@@ -333,9 +311,9 @@ const RecipeHelperBody = (_props: any) => {
     if (currentRecipe != null)
         myRecipe = currentRecipe;
 
-    for(const i of myRecipe.ingredients){
-        {i}
-    }  
+    for (const i of myRecipe.ingredients) {
+        { i }
+    }
 
     SpeechRecognition.startListening({ continuous: true });
     return (
@@ -344,37 +322,37 @@ const RecipeHelperBody = (_props: any) => {
             <p>{currentInstruction}</p>
             <p>{message}</p>
             <p>{transcript}</p>
-    
-    {/* <div {...handlers}> You can swipe here </div> */}
-    <div {...handlers}>
-    <Typography variant="body" component="div" align="center"> 
-    Swipe left & right to see other recipes!
-        </Typography> 
-    <Card sx={{ maxWidth: 600}}>
-      <CardContent>
-        <Typography variant='h3' gutterBottom>
-        </Typography>
-        <Typography variant="h4" component="div">
-        {myRecipe.title}
-        </Typography>
-        <Typography variant="h5" component="div"> 
-      Ingredients
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-        {myRecipe.ingredients}
-        </Typography>
-        <Typography variant="h5" component="div">
-      Instructions
-        </Typography>
-        <Typography variant="body1">
-        {myRecipe.instructions}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        {/* <Button onClick={()=>{myRecipe.liked = !myRecipe.liked, console.log(myRecipe.liked)}} size="small">Like this Recipe!</Button> */}
-      </CardActions>
-    </Card>
-    </div>
+
+            {/* <div {...handlers}> You can swipe here </div> */}
+            <div {...handlers}>
+                <Typography variant="body1" component="div" align="center">
+                    Swipe left & right to see other recipes!
+                </Typography>
+                <Card style={{ maxWidth: 600 }}>
+                    <CardContent>
+                        <Typography variant='h3' gutterBottom>
+                        </Typography>
+                        <Typography variant="h4" component="div">
+                            {myRecipe.title}
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                            Ingredients
+                        </Typography>
+                        <Typography style={{ mb: 1.5 }} color="textSecondary">
+                            {myRecipe.ingredients}
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                            Instructions
+                        </Typography>
+                        <Typography variant="body1">
+                            {myRecipe.instructions}
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        {/* <Button onClick={()=>{myRecipe.liked = !myRecipe.liked, console.log(myRecipe.liked)}} size="small">Like this Recipe!</Button> */}
+                    </CardActions>
+                </Card>
+            </div>
         </div>
     );
 };
