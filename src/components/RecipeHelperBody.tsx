@@ -16,16 +16,18 @@ import fillRecipes from "./recipeCards.js";
 import { Card, Container, Grid, GridListTileBar, Grow, Radio, Typography } from "@material-ui/core";
 // import React, {Component,useEffect, useState} from 'react';
 
+import {TextField} from '@material-ui/core';
+
 import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography'
 // import Card from '@mui/material/Card';
+
 // import Typography from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { useSwipeable } from "react-swipeable";
 // import Typography from '@mui/material/Typography';
-import { TextField } from '@material-ui/core';
 
 interface Recipe {
     title: string;
@@ -247,7 +249,6 @@ const RecipeHelperBody = (_props: any) => {
             setMessage("There is no recipe to the left.")
 
 
-        console.log(currentRecipe);
         return null
     }
 
@@ -333,8 +334,17 @@ const RecipeHelperBody = (_props: any) => {
             <p>{currentInstruction}</p>
             <p>{message}</p>
             <p>{transcript}</p>
+
+
     
     {/* <div {...handlers}> You can swipe here </div> */}
+
+    <form autoComplete="on" noValidate onSubmit={handleSubmit}>
+          <TextField name="recipe" variant="outlined" label="recipe title" fullWidth value={postData} onChange={(e) => setPostData(e.target.value)} />
+          <Button variant="contained" color="primary" size="large" type="submit"  onClick={() => handleFilter(postData)}fullWidth>search</Button>
+          {/* <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> */}
+
+                   </form>
     <div {...handlers}>
     <Typography variant="body" component="div" align="center"> 
     Swipe left & right to see other recipes!
