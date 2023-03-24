@@ -13,21 +13,23 @@ import speech from 'speech-js';
 import fillRecipes from "./recipeCards.js";
 
 //for cards
-import { Card, Container, Grid, GridListTileBar, Grow, Radio, Typography } from "@material-ui/core";
+import { Card, Grid, GridListTileBar, Grow, Radio } from "@material-ui/core";
 // import React, {Component,useEffect, useState} from 'react';
 
-import { TextField } from '@material-ui/core';
-
+// import { TextField } from '@material-ui/core';
 import Box from '@mui/material/Box';
-// import Typography from '@mui/material/Typography'
-// import Card from '@mui/material/Card';
-
-// import Typography from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import { useSwipeable } from "react-swipeable";
 // import Typography from '@mui/material/Typography';
+
+import useStyles from "./styles";
+
+// import {Grid, Grow, Paper} from "@material-ui/core";
+// import React from "react";
+import {AppBar, Button, Container, TextField, Typography} from "@material-ui/core";
+
 
 interface Recipe {
     title: string;
@@ -97,12 +99,11 @@ const RecipeHelperBody = (_props: any) => {
     }
 
     const [postData, setPostData] = useState("");
-
     const [message, setMessage] = useState("");
     const [currentTranscript, setCurrentTranscript] = useState("");
-    const [currentRecipe, setCurrentRecipe] = useState<Recipe | null>(null);
+    const [currentRecipe, setCurrentRecipe] = useState<Recipe>(recipes[0]);
     const [filtered, setFiltered] = useState<Recipe[]>(recipes);
-    const [currentInstruction, setCurrentInstruction] = useState("");
+    const [currentInstruction, setCurrentInstruction] = useState("You haven't started yet!");
 
     const handleFilter = (recipeType: string) => {
         // recipeType = ' '+recipeType;
@@ -117,8 +118,8 @@ const RecipeHelperBody = (_props: any) => {
         }
         setFiltered(searched);
         if (searched.length > 0) {
-            setCurrentRecipe(null); //clears current one
-            speech.synthesis(`I found a ${searched[0].title} recipe, swipe for other ${recipeType} recipes`, 'en-US') // speech synthesis module
+            console.log(`I found a ${searched[0].title} recipe. You can swipe for other ${recipeType} recipes`);
+            speech.synthesis(`I found a ${searched[0].title} recipe. You can swipe for other ${recipeType} recipes`, 'en-US') // speech synthesis module
             setCurrentRecipe(searched[0]);
 
             if (searched[0].instructions != null)
@@ -151,7 +152,7 @@ const RecipeHelperBody = (_props: any) => {
         }
     }
 
-    const handleNext = () => {
+    const handleNext = (mirror: string) => {
 
         if (currentRecipe == null) {
             speech.synthesis("No recipe has been started yet", 'en-US') // speech synthesis module
@@ -166,12 +167,16 @@ const RecipeHelperBody = (_props: any) => {
 
             if (ind < currentRecipe.instructions.length - 1) {
                 setCurrentInstruction(currentRecipe.instructions[ind + 1]);
+                if (mirror.includes("step"))
                 speech.synthesis(`The next step is ${currentInstruction} `, 'en-US') // speech synthesis module
+                else
+                speech.synthesis(`After that ${currentInstruction} `, 'en-US') // speech synthesis module
+
                 setMessage("Now showing the next step")
             }
             else
                 setMessage("this is the last step")
-            speech.synthesis("You're done! this is the last step", 'en-US') // speech synthesis module
+            speech.synthesis("You're done! this is the last step.", 'en-US') // speech synthesis module
 
         }
     }
@@ -180,8 +185,10 @@ const RecipeHelperBody = (_props: any) => {
         if (currentRecipe == null) {
             setMessage("No recipe has been started yet");
         } else {
-            setMessage("Ending recipe")
+            setMessage("Okay, see ya later al ligator");
             setCurrentRecipe(null);
+            speech.synthesis("Okay, see ya later al ligator", 'en-US'); // speech synthesis module
+
             //POTENTIAL AUDIO OUTPUT
         }
     }
@@ -272,11 +279,11 @@ const RecipeHelperBody = (_props: any) => {
     }
     const commands = [
         { //duplicate of show me
-            command: 'Find me a :recipeType recipe',
+            command: 'Find me (a)(an) :recipeType recipe',
             callback: (recipeType: any) => handleFilter(recipeType)
         },
         {
-            command: 'Show me a :recipeType recipe',
+            command: 'Show me (a)(an) :recipeType recipe',
             callback: (recipeType: any) => handleFilter(recipeType)
         },
         {
@@ -285,15 +292,15 @@ const RecipeHelperBody = (_props: any) => {
         },
         {
             command: '(what\'s the) next (step)',
-            callback: () => handleNext()
+            callback: () => handleNext("step")
         },
         {
-            command: '(what\'s the) first step',
+            command: '(what\'s)(the) first (step)',
             callback: () => firstStep()
         },
         {
-            command: '(what\'s) after that (step)',
-            callback: () => handleNext()
+            command: '(what\'s)(the step) after that (step)',
+            callback: () => handleNext("after")
         },
         {
             command: "I'm done (cooking)(baking)",
@@ -328,27 +335,42 @@ const RecipeHelperBody = (_props: any) => {
         clear();
     }
 
+    if (transcript.length > 600){
+    resetTranscript();
+    }
+
+    const  classes = useStyles(); //for styling
+
 
     return (
-        <div>
-            <p>{currentInstruction}</p>
-            <p>{message}</p>
-            <p>{transcript}</p>
-
-
-
-            {/* <div {...handlers}> You can swipe here </div> */}
-
-            <form autoComplete="on" noValidate onSubmit={handleSubmit}>
+        <Container>
+            <form autoComplete="on" noValidate onSubmit={handleSubmit} className="box-with-heading" >
                 <TextField name="recipe" variant="outlined" label="recipe title" fullWidth value={postData} onChange={(e) => setPostData(e.target.value)} />
-                <Button variant="contained" color="primary" size="large" type="submit" onClick={() => handleFilter(postData)} fullWidth>search</Button>
+                <Button variant="contained" className="button-standard" color="primary" size="large" type="submit" onClick={() => handleFilter(postData)} fullWidth>search</Button>
                 {/* <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> */}
-
             </form>
-            <div {...handlers}>
-                <Typography variant="body1" component="div" align="center">
-                    Swipe left & right to see other recipes!
+            <p>Al says: {message}</p>
+            <p>You're saying: {transcript}</p>
+            <Button>
+            <Card style={{ maxWidth: 600 }}>
+            <CardContent>
+                        <Typography variant='h3' gutterBottom>
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                            Next Instruction
+                        </Typography>
+                        <Typography variant="body1" component="div">
+                        {currentInstruction}
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                    </CardActions>
+            </Card>
+            </Button>
+            <Typography variant="body1" component="div" align="center">
+                    Swipe left or right to see other recipes!
                 </Typography>
+            <div {...handlers}>
                 <Card style={{ maxWidth: 600 }}>
                     <CardContent>
                         <Typography variant='h3' gutterBottom>
@@ -374,7 +396,7 @@ const RecipeHelperBody = (_props: any) => {
                     </CardActions>
                 </Card>
             </div>
-        </div>
+        </Container>
     );
 };
 
