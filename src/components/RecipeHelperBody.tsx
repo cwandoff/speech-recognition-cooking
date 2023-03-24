@@ -19,12 +19,14 @@ import { Card, Container, Grid, GridListTileBar, Grow, Radio, Typography } from 
 import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography'
 // import Card from '@mui/material/Card';
+// import Typography from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { useSwipeable } from "react-swipeable";
 import { alignProperty } from "@mui/material/styles/cssUtils";
 // import Typography from '@mui/material/Typography';
+import { TextField } from '@material-ui/core';
 
 interface Recipe {
     title: string;
@@ -60,8 +62,6 @@ const recipes = Object.values(recipesData).map((val) => { //fixed current instru
 })
 
 
-
-
 const RecipeHelperBody = (_props: any) => {
 
     //implement swiper https://www.npmjs.com/package/react-swipeable
@@ -95,6 +95,7 @@ const RecipeHelperBody = (_props: any) => {
         return currInstructIndex;
     }
 
+    const [postData, setPostData] = useState("");
 
     const [message, setMessage] = useState("");
     const [currentTranscript, setCurrentTranscript] = useState("");
@@ -295,7 +296,7 @@ const RecipeHelperBody = (_props: any) => {
             callback: () => handleNext()
         },
         {
-            command: "I'm done",
+            command: "I'm done (cooking)(baking)",
             callback: () => handleEnd(),
 
         },
@@ -317,12 +318,23 @@ const RecipeHelperBody = (_props: any) => {
     }
 
     SpeechRecognition.startListening({ continuous: true });
+
+    const clear = () => {
+    setPostData("");
+    };
+
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    clear();
+    }
+          
+
     return (
         <div>
-            <p>{myRecipe.title}</p>
             <p>{currentInstruction}</p>
             <p>{message}</p>
             <p>{transcript}</p>
+<<<<<<< HEAD
 
             {/* <div {...handlers}> You can swipe here </div> */}
             <div {...handlers}>
@@ -354,6 +366,39 @@ const RecipeHelperBody = (_props: any) => {
                     </CardActions>
                 </Card>
             </div>
+=======
+    
+    {/* <div {...handlers}> You can swipe here </div> */}
+    <div {...handlers}>
+    <Typography variant="body" component="div" align="center"> 
+    Swipe left & right to see other recipes!
+        </Typography> 
+    <Card sx={{ maxWidth: 600}}>
+      <CardContent>
+        <Typography variant='h3' gutterBottom>
+        </Typography>
+        <Typography variant="h4" component="div">
+        {myRecipe.title}
+        </Typography>
+        <Typography variant="h5" component="div"> 
+      Ingredients
+        </Typography>
+        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+        {myRecipe.ingredients}
+        </Typography>
+        <Typography variant="h5" component="div">
+      Instructions
+        </Typography>
+        <Typography variant="body1">
+        {myRecipe.instructions}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        {/* <Button onClick={()=>{myRecipe.liked = !myRecipe.liked, console.log(myRecipe.liked)}} size="small">Like this Recipe!</Button> */}
+      </CardActions>
+    </Card>
+    </div>
+>>>>>>> 6a93e95d740e1817142f1a76a7c2d471ddafedf1
         </div>
     );
 };
