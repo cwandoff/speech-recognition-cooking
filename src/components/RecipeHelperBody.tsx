@@ -16,9 +16,12 @@ import fillRecipes from "./recipeCards.js";
 import { Card, Container, Grid, GridListTileBar, Grow, Radio, Typography } from "@material-ui/core";
 // import React, {Component,useEffect, useState} from 'react';
 
+import {TextField} from '@material-ui/core';
+
 import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography'
 // import Card from '@mui/material/Card';
+
 // import Typography from '@mui/material';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -26,7 +29,6 @@ import Button from '@mui/material/Button';
 import { useSwipeable } from "react-swipeable";
 import { alignProperty } from "@mui/material/styles/cssUtils";
 // import Typography from '@mui/material/Typography';
-import { TextField } from '@material-ui/core';
 
 interface Recipe {
     title: string;
@@ -248,7 +250,6 @@ const RecipeHelperBody = (_props: any) => {
             setMessage("There is no recipe to the left.")
 
 
-        console.log(currentRecipe);
         return null
     }
 
@@ -334,41 +335,15 @@ const RecipeHelperBody = (_props: any) => {
             <p>{currentInstruction}</p>
             <p>{message}</p>
             <p>{transcript}</p>
-<<<<<<< HEAD
-
-            {/* <div {...handlers}> You can swipe here </div> */}
-            <div {...handlers}>
-                <Typography variant="body1" component="div" align="center">
-                    Swipe left & right to see other recipes!
-                </Typography>
-                <Card style={{ maxWidth: 600, alignSelf: 'center' }}>
-                    <CardContent>
-                        <Typography variant='h3' gutterBottom>
-                        </Typography>
-                        <Typography variant="h4" component="div">
-                            {myRecipe.title}
-                        </Typography>
-                        <Typography variant="h5" component="div">
-                            Ingredients
-                        </Typography>
-                        <Typography style={{ marginBottom: 1.5 }} color="textSecondary">
-                            {myRecipe.ingredients}
-                        </Typography>
-                        <Typography variant="h5" component="div">
-                            Instructions
-                        </Typography>
-                        <Typography variant="body1">
-                            {myRecipe.instructions}
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        {/* <Button onClick={()=>{myRecipe.liked = !myRecipe.liked, console.log(myRecipe.liked)}} size="small">Like this Recipe!</Button> */}
-                    </CardActions>
-                </Card>
-            </div>
-=======
     
     {/* <div {...handlers}> You can swipe here </div> */}
+
+    <form autoComplete="on" noValidate onSubmit={handleSubmit}>
+          <TextField name="recipe" variant="outlined" label="recipe title" fullWidth value={postData} onChange={(e) => setPostData(e.target.value)} />
+          <Button variant="contained" color="primary" size="large" type="submit"  onClick={() => handleFilter(postData)}fullWidth>search</Button>
+          {/* <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button> */}
+
+                   </form>
     <div {...handlers}>
     <Typography variant="body" component="div" align="center"> 
     Swipe left & right to see other recipes!
