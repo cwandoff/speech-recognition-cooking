@@ -6,7 +6,7 @@ export const Header: FC = () => {
   return (
     <nav className={styles.navigation}>
         <div className={styles.logo}>
-          <Typography variant={"h5"}>Welcome To Chuck's World</Typography>
+          <Typography variant={"h4"}>Chef Big Al</Typography>
         </div>
     </nav>
   );
