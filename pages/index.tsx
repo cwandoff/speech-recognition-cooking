@@ -3,7 +3,7 @@ import { Content } from "../src/components/ui/Content";
 import RecipeHelperBody from "../src/components/RecipeHelperBody";
 
 
-const HomePage = (_props: any) => {
+const HomePage = () => {
   return (
     <Content>
       <RecipeHelperBody/>

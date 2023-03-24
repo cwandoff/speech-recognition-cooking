@@ -23,6 +23,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { useSwipeable } from "react-swipeable";
+import { alignProperty } from "@mui/material/styles/cssUtils";
 // import Typography from '@mui/material/Typography';
 
 interface Recipe {
@@ -328,7 +329,7 @@ const RecipeHelperBody = (_props: any) => {
                 <Typography variant="body1" component="div" align="center">
                     Swipe left & right to see other recipes!
                 </Typography>
-                <Card style={{ maxWidth: 600 }}>
+                <Card style={{ maxWidth: 600, alignSelf: 'center' }}>
                     <CardContent>
                         <Typography variant='h3' gutterBottom>
                         </Typography>
@@ -338,7 +339,7 @@ const RecipeHelperBody = (_props: any) => {
                         <Typography variant="h5" component="div">
                             Ingredients
                         </Typography>
-                        <Typography style={{ mb: 1.5 }} color="textSecondary">
+                        <Typography style={{ marginBottom: 1.5 }} color="textSecondary">
                             {myRecipe.ingredients}
                         </Typography>
                         <Typography variant="h5" component="div">
