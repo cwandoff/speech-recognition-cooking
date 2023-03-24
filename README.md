@@ -74,4 +74,10 @@ To run the tests one off just run
 yarn test-ci
 ```
 
+## Other Files
 
+Recipe data was downloaded from https://eightportions.com/datasets/Recipes/#fn:1 
+
+Only one of the JSON files from this website are being used in the code
+
+The other JSON files may be implemented as production goes on.
