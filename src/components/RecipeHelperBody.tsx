@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import SpeechRecognition, {
     useSpeechRecognition,
@@ -70,16 +71,10 @@ const RecipeHelperBody = (_props: any) => {
     //implement swiper https://www.npmjs.com/package/react-swipeable
     const handlers = useSwipeable({
         onSwiped: (eventData) => console.log("User Swiped!", eventData),
-        // onSwipedUp: () => getNextRecipe(recipes,currentRecipe?.title), //change it to the recipe on the left or right
         swipeDuration: 500, // only swipes under 250ms will trigger callbacks
-        //         onSwiped: (SwipeEventData) => ({console.log("30")}),
         onSwipedLeft: () => getNextRecipe((filtered == null ? recipes : filtered), currentRecipe?.title),   // After LEFT swipe  (SwipeEventData) => void
         onSwipedRight: () => getPrevRecipe((filtered == null ? recipes : filtered), currentRecipe?.title),   // After RIGHT swipe  (SwipeEventData) => void
-        //   onSwipedUp,     // After UP swipe    (SwipeEventData) => void
-        //   onSwipedDown,   // After DOWN swipe  (SwipeEventData) => void
-        //   onSwipeStart,   // Start of swipe    (SwipeEventData) => void *see details*
-        //   onSwiping,      // During swiping    (SwipeEventData) => void
-        //   onTap,          // After a tap       ({ event }) => void
+
     });
 
 
@@ -132,10 +127,70 @@ const RecipeHelperBody = (_props: any) => {
 
     }
 
+   
+    
+
+    const readIngredient = (factor: number) => {
+        speech.synthesis(`${currentRecipe?.ingredients[factor]} `, 'en-US') // speech synthesis module
+    }
+
+
+    const handleIngredients = (factor: number) => {
+
+        let ingredientsIndex = currentRecipe?.ingredients.length;
+        let str = currentRecipe?.ingredients[0];
+        
+        let i = 1;
+        while (i < ingredientsIndex) {
+            // speech.synthesis(`${currentRecipe?.ingredients[i]} `, 'en-US') // speech synthesis module
+            // speech.synthesis("hi", 'en-US') // speech synthesis module
+            console.log(ingredientsIndex + i)
+            if (i + 1 == ingredientsIndex)
+            str = str +".    and"+ currentRecipe?.ingredients[i];
+            else
+            str = str +".    "+ currentRecipe?.ingredients[i];
+
+            i++;
+        }
+
+        //update all instruction values if you are doubling it
+
+        speech.synthesis(`There are ${currentRecipe?.ingredients.length} ingredients for ${currentRecipe?.title}  . ${str}`, 'en-US') // speech synthesis module
+        var cleanIngerdients = new Array();
+
+
+
+        // for ( let r of currentRecipe?.ingredients) {
+        //     speech.synthesis(`${r} `, 'en-US') // speech synthesis module
+        //     speech.synthesis(`gg`, 'en-US') // speech synthesis module
+        // }
+
+        while (i < ingredientsIndex) {
+            // speech.synthesis(`${currentRecipe?.ingredients[i]} `, 'en-US') // speech synthesis module
+            // speech.synthesis("hi", 'en-US') // speech synthesis module
+            console.log(ingredientsIndex + i)
+            cleanIngerdients.push(currentRecipe?.ingredients[i])
+            i++;       
+            readIngredient(2);
+
+        }
+
+        cleanIngerdients.forEach(element => {
+                        // speech.synthesis({element}, 'en-US') // speech synthesis module
+                        speech.synthesis("hi", 'en-US') // speech synthesis module
+
+                        console.log({element})
+
+        });
+        
+
+        return null;
+    }
     const firstStep = () => {
         speech.synthesis(`The first step is  ${currentRecipe?.instructions[0]} `, 'en-US') // speech synthesis module
         return null;
     }
+    
     const handleStart = (recipeName: string) => {
 
         if (recipeExists(recipeName)) {
@@ -279,7 +334,7 @@ const RecipeHelperBody = (_props: any) => {
     }
     const commands = [
         { //duplicate of show me
-            command: 'Find me (a)(an) :recipeType recipe',
+            command: '(Find) (me) (a)(an) :recipeType recipe',
             callback: (recipeType: any) => handleFilter(recipeType)
         },
         {
@@ -301,6 +356,10 @@ const RecipeHelperBody = (_props: any) => {
         {
             command: '(what\'s)(the step) after that (step)',
             callback: () => handleNext("after")
+        },
+        {
+            command: '(what) (are) (the) (required) ingredients',
+            callback: () => handleIngredients(1)
         },
         {
             command: "I'm done (cooking)(baking)",
@@ -326,6 +385,7 @@ const RecipeHelperBody = (_props: any) => {
 
     SpeechRecognition.startListening({ continuous: true });
 
+    //handle form
     const clear = () => {
         setPostData("");
     };
@@ -340,6 +400,45 @@ const RecipeHelperBody = (_props: any) => {
     }
 
     const  classes = useStyles(); //for styling
+
+    
+    const makeIngredients = () => {
+        var cleanIngredients = new Array();
+        let index = 0;
+
+        while (index < myRecipe.ingredients.length) {
+            cleanIngredients.push(
+            <Typography style={{ marginBottom: 1.5 }} color="textSecondary">
+                {myRecipe.ingredients[index]}
+            </Typography>
+            )
+            index++;
+        }
+        
+        return (
+            cleanIngredients
+        )
+    };
+
+
+        
+    const makeInstructions = () => {
+        var cleanIngredients = new Array();
+        let index = 0;
+
+        while (index < myRecipe.instructions.length) {
+            cleanIngredients.push(
+            <Typography style={{ marginBottom: 1.5 }}>
+               {index + 1}. {myRecipe.instructions[index]}
+            </Typography>
+            )
+            index++;
+        }
+        
+        return (
+            cleanIngredients
+        )
+    };
 
 
     return (
@@ -381,15 +480,17 @@ const RecipeHelperBody = (_props: any) => {
                         <Typography variant="h5" component="div">
                             Ingredients
                         </Typography>
-                        <Typography style={{ marginBottom: 1.5 }} color="textSecondary">
-                            {myRecipe.ingredients}
-                        </Typography>
+                        {/* <Typography style={{ marginBottom: 1.5 }} color="textSecondary">
+                            {myRecipe.ingredients[0]}
+                        </Typography> */}
+                        {makeIngredients()}
                         <Typography variant="h5" component="div">
                             Instructions
                         </Typography>
-                        <Typography variant="body1">
+                        {/* <Typography variant="body1">
                             {myRecipe.instructions}
-                        </Typography>
+                        </Typography> */}
+                        {makeInstructions()}
                     </CardContent>
                     <CardActions>
                         {/* <Button onClick={()=>{myRecipe.liked = !myRecipe.liked, console.log(myRecipe.liked)}} size="small">Like this Recipe!</Button> */}
