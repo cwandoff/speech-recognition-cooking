@@ -29,7 +29,7 @@ import useStyles from "./styles";
 
 // import {Grid, Grow, Paper} from "@material-ui/core";
 // import React from "react";
-import {AppBar, Button, Container, TextField, Typography} from "@material-ui/core";
+import { AppBar, Button, Container, TextField, Typography } from "@material-ui/core";
 
 
 interface Recipe {
@@ -127,9 +127,6 @@ const RecipeHelperBody = (_props: any) => {
 
     }
 
-   
-    
-
     const readIngredient = (factor: number) => {
         speech.synthesis(`${currentRecipe?.ingredients[factor]} `, 'en-US') // speech synthesis module
     }
@@ -139,17 +136,16 @@ const RecipeHelperBody = (_props: any) => {
 
         let ingredientsIndex = currentRecipe?.ingredients.length;
         let str = currentRecipe?.ingredients[0];
-        
+
         let i = 1;
         while (i < ingredientsIndex) {
             // speech.synthesis(`${currentRecipe?.ingredients[i]} `, 'en-US') // speech synthesis module
             // speech.synthesis("hi", 'en-US') // speech synthesis module
             console.log(ingredientsIndex + i)
             if (i + 1 == ingredientsIndex)
-            str = str +".    and"+ currentRecipe?.ingredients[i];
+                str = str + ".    and" + currentRecipe?.ingredients[i];
             else
-            str = str +".    "+ currentRecipe?.ingredients[i];
-
+                str = str + ".    " + currentRecipe?.ingredients[i];
             i++;
         }
 
@@ -158,31 +154,24 @@ const RecipeHelperBody = (_props: any) => {
         speech.synthesis(`There are ${currentRecipe?.ingredients.length} ingredients for ${currentRecipe?.title}  . ${str}`, 'en-US') // speech synthesis module
         var cleanIngerdients = new Array();
 
-
-
-        // for ( let r of currentRecipe?.ingredients) {
-        //     speech.synthesis(`${r} `, 'en-US') // speech synthesis module
-        //     speech.synthesis(`gg`, 'en-US') // speech synthesis module
-        // }
-
         while (i < ingredientsIndex) {
             // speech.synthesis(`${currentRecipe?.ingredients[i]} `, 'en-US') // speech synthesis module
             // speech.synthesis("hi", 'en-US') // speech synthesis module
             console.log(ingredientsIndex + i)
             cleanIngerdients.push(currentRecipe?.ingredients[i])
-            i++;       
+            i++;
             readIngredient(2);
 
         }
 
         cleanIngerdients.forEach(element => {
-                        // speech.synthesis({element}, 'en-US') // speech synthesis module
-                        speech.synthesis("hi", 'en-US') // speech synthesis module
+            // speech.synthesis({element}, 'en-US') // speech synthesis module
+            speech.synthesis("hi", 'en-US') // speech synthesis module
 
-                        console.log({element})
+            console.log({ element })
 
         });
-        
+
 
         return null;
     }
@@ -190,16 +179,16 @@ const RecipeHelperBody = (_props: any) => {
         speech.synthesis(`The first step is  ${currentRecipe?.instructions[0]} `, 'en-US') // speech synthesis module
         return null;
     }
-    
+
     const handleStart = (recipeName: string) => {
 
         const recipe = getRecipe(recipeName);
-        if(recipe === undefined){
+        if (recipe === undefined) {
             setMessage("Invalid Recipe");
         } else {
             setCurrentRecipe(recipe);
         }
-        
+
         if (currentRecipe != null) {
             if (currentRecipe.instructions != null)
                 setCurrentInstruction(currentRecipe.instructions[0])
@@ -225,9 +214,9 @@ const RecipeHelperBody = (_props: any) => {
             if (ind < currentRecipe.instructions.length - 1) {
                 setCurrentInstruction(currentRecipe.instructions[ind + 1]);
                 if (mirror.includes("step"))
-                speech.synthesis(`The next step is ${currentInstruction} `, 'en-US') // speech synthesis module
+                    speech.synthesis(`The next step is ${currentInstruction} `, 'en-US') // speech synthesis module
                 else
-                speech.synthesis(`After that ${currentInstruction} `, 'en-US') // speech synthesis module
+                    speech.synthesis(`After that ${currentInstruction} `, 'en-US') // speech synthesis module
 
                 setMessage("Now showing the next step")
             }
@@ -280,9 +269,7 @@ const RecipeHelperBody = (_props: any) => {
         // return null;
     }
 
-
     //for swiper
-
     //find recipe to the left of current filtered recipies
 
     const getRecipeIndex = (recipeArr: Recipe[], recipeName?: string) => {
@@ -298,7 +285,6 @@ const RecipeHelperBody = (_props: any) => {
         }
         return org_index;
     }
-
 
     //find recipe to the right of current filtered recipes
     const getNextRecipe = (recipeArr: Recipe[], recipeName?: string) => {
@@ -397,51 +383,48 @@ const RecipeHelperBody = (_props: any) => {
         clear();
     }
 
-    if (transcript.length > 600){
-    resetTranscript();
+    if (transcript.length > 600) {
+        resetTranscript();
     }
 
-    const  classes = useStyles(); //for styling
+    const classes = useStyles(); //for styling
 
-    
+
     const makeIngredients = () => {
         var cleanIngredients = new Array();
         let index = 0;
 
         while (index < myRecipe.ingredients.length) {
             cleanIngredients.push(
-            <Typography style={{ marginBottom: 1.5 }} color="textSecondary">
-                {myRecipe.ingredients[index]}
-            </Typography>
+                <Typography style={{ marginBottom: 1.5 }} color="textSecondary">
+                    {myRecipe.ingredients[index]}
+                </Typography>
             )
             index++;
         }
-        
+
         return (
             cleanIngredients
         )
     };
 
-
-        
     const makeInstructions = () => {
         var cleanIngredients = new Array();
         let index = 0;
 
         while (index < myRecipe.instructions.length) {
             cleanIngredients.push(
-            <Typography style={{ marginBottom: 1.5 }}>
-               {index + 1}. {myRecipe.instructions[index]}
-            </Typography>
+                <Typography style={{ marginBottom: 1.5 }}>
+                    {index + 1}. {myRecipe.instructions[index]}
+                </Typography>
             )
             index++;
         }
-        
+
         return (
             cleanIngredients
         )
     };
-
 
     return (
         <Container>
@@ -453,24 +436,24 @@ const RecipeHelperBody = (_props: any) => {
             <p>Al says: {message}</p>
             <p>You're saying: {transcript}</p>
             <Button>
-            <Card style={{ maxWidth: 600 }}>
-            <CardContent>
+                <Card style={{ maxWidth: 600 }}>
+                    <CardContent>
                         <Typography variant='h3' gutterBottom>
                         </Typography>
                         <Typography variant="h5" component="div">
                             Next Instruction
                         </Typography>
                         <Typography variant="body1" component="div">
-                        {currentInstruction}
+                            {currentInstruction}
                         </Typography>
                     </CardContent>
                     <CardActions>
                     </CardActions>
-            </Card>
+                </Card>
             </Button>
             <Typography variant="body1" component="div" align="center">
-                    Swipe left or right to see other recipes!
-                </Typography>
+                Swipe left or right to see other recipes!
+            </Typography>
             <div {...handlers}>
                 <Card style={{ maxWidth: 600 }}>
                     <CardContent>
