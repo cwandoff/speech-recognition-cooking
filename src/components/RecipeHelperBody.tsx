@@ -193,16 +193,18 @@ const RecipeHelperBody = (_props: any) => {
     
     const handleStart = (recipeName: string) => {
 
+        const recipe = getRecipe(recipeName);
+        if(recipe === undefined){
+            setMessage("Invalid Recipe");
+        } else {
+            setCurrentRecipe(recipe);
+        }
+        
+        if (currentRecipe != null) {
+            if (currentRecipe.instructions != null)
+                setCurrentInstruction(currentRecipe.instructions[0])
+        }
         if (recipeExists(recipeName)) {
-            setCurrentRecipe(getRecipe(recipeName));
-
-            if (currentRecipe != null) {
-                if (currentRecipe.instructions != null)
-                    setCurrentInstruction(currentRecipe.instructions[0])
-            }
-
-
-
             setMessage(`Starting recipe: ${currentRecipe?.title}`);
         }
     }
@@ -241,7 +243,7 @@ const RecipeHelperBody = (_props: any) => {
             setMessage("No recipe has been started yet");
         } else {
             setMessage("Okay, see ya later al ligator");
-            setCurrentRecipe(null);
+            setCurrentRecipe(recipes[0]);
             speech.synthesis("Okay, see ya later al ligator", 'en-US'); // speech synthesis module
 
             //POTENTIAL AUDIO OUTPUT
@@ -275,7 +277,7 @@ const RecipeHelperBody = (_props: any) => {
                 }
             }
         }
-        return null
+        // return null;
     }
 
 
