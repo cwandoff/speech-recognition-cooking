@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { Header } from "./Header";
 import styles from "./Page.module.scss";
+import { Grid } from "@material-ui/core";
 
 interface contentProps{
   children: React.ReactNode
@@ -9,8 +9,8 @@ interface contentProps{
 export const Content: FC<contentProps> = ({ children }) => {
   return (
     <div className={styles.page}>
-      <Header/>
-      <div className={styles.content}>{children}</div>
+      <div className={styles.content}>
+        {children}</div>
     </div>
   );
 };

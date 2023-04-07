@@ -1,12 +1,20 @@
 $nicePurple: #7851a9;
 $white: #FFFFFF;
 
+$color1Prim: #E3E9C2;
+$color2Prim: #F9FBB2;
+$color1Accent: #F8FCDA;
+$color2Accent: #7C6354;
+$color3Accent: #A5ABAF;
+
 
 .navigation {
   align-items: center;
   display: flex;
   justify-content: space-between;
   padding: 1.5rem 1.5rem 1rem;
+  background-color: $color2Prim;
+
 
   .logo {
     font-size: 1.5rem;
@@ -15,7 +23,7 @@ $white: #FFFFFF;
   }
 }
 .page {
-  background-color: $nicePurple;
+  background-color: $color1Prim;
   display: flex;
   flex-direction: column;
   max-width: 100%;
@@ -24,7 +32,6 @@ $white: #FFFFFF;
   width: 100%;
 
   .content {
-    background-color: $white;
     display: flex;
     flex-direction: column;
     flex: 1;

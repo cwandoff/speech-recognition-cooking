@@ -8,6 +8,9 @@ This is a [Next.js](https://nextjs.org/) project.
 - Yarn `^1.22`
   - Can be installed by running `npm install -g yarn`
 
+- Next
+yarn add next
+
 ## Getting Started
 
 ``` 
