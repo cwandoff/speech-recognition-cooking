@@ -4,7 +4,7 @@ import SpeechRecognition, {
     useSpeechRecognition,
 } from "react-speech-recognition";
 import { useState } from "react";
-
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import * as recipesData from "./prototype files/recipes_raw/recipes_raw_nosource_ar.json"
 
 // import * as React from 'react';
@@ -19,7 +19,7 @@ import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -34,7 +34,7 @@ import speech from 'speech-js';
 import fillRecipes from "./recipeCards.js";
 
 //for cards
-import { Card, Checkbox, FormControlLabel, FormGroup, Grid, GridListTile, GridListTileBar, Grow, Radio } from "@material-ui/core";
+import { Card, Checkbox, FormControlLabel, FormGroup, Grid, GridListTile, GridListTileBar, Grow, Radio, Slider } from "@material-ui/core";
 // import React, {Component,useEffect, useState} from 'react';
 
 // import { TextField } from '@material-ui/core';
@@ -53,6 +53,8 @@ import { AppBar, Button, Container, TextField } from "@material-ui/core";
 import { Header } from "./ui/Header";
 import { ArrowCircleLeft, ArrowCircleRight } from "@mui/icons-material";
 
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import SearchIcon from '@mui/icons-material/Search';
 
 interface Recipe {
     title: string;
@@ -161,6 +163,7 @@ const RecipeHelperBody = (_props: any) => {
     const [currentTranscript, setCurrentTranscript] = useState("");
     const [currentRecipe, setCurrentRecipe] = useState<Recipe>(recipes[0]);
     const [filtered, setFiltered] = useState<Recipe[]>(recipes);
+    const [favorites, setFavorites] = useState<number[]>([]);
     const [currentInstruction, setCurrentInstruction] = useState("You haven't started yet!");
 
     const handleFilter = (recipeType: string) => {
@@ -353,15 +356,12 @@ const RecipeHelperBody = (_props: any) => {
     const getNextRecipe = (recipeArr: Recipe[], recipeName?: string) => {
 
         let org_index = getRecipeIndex(recipeArr, recipeName);
-        console.log(currentRecipe);
         if (org_index < recipeArr.length - 1) {
             setCurrentRecipe(recipeArr[org_index + 1]); //changes curr recipe to nexy recipe
             setCurrentInstruction(recipeArr[org_index + 1].instructions[0]); //changes curr instruc to first of recipe
         }
         else
             setMessage("There is no recipe to the left.")
-
-
         return null
     }
 
@@ -473,11 +473,22 @@ const RecipeHelperBody = (_props: any) => {
         let index = 0;
 
         while (index < myRecipe.instructions.length) {
-            cleanIngredients.push(
-                <Typography style={{ marginBottom: 1.5 }}>
-                    {index + 1}. {myRecipe.instructions[index]}
-                </Typography>
-            )
+            
+            if (myRecipe.instructions[index] == currentInstruction) {
+                cleanIngredients.push(
+                    <Typography style={{ marginBottom: 1.5 }}>
+                     <b>   {index + 1}. {myRecipe.instructions[index]} </b>
+                    </Typography>
+                )
+            }
+            else {
+                cleanIngredients.push(
+                    <Typography style={{ marginBottom: 1.5 }}>
+                        {index + 1}. {myRecipe.instructions[index]}
+                    </Typography>
+                )
+            }
+
             index++;
         }
 
@@ -489,7 +500,33 @@ const RecipeHelperBody = (_props: any) => {
 
     //sorry it's way too nested
     //PrimarySearchAppBar look up for more menu nav stuff
+    // const favLinks = (ind: number) => {
+    //     index
+    // }
 
+    const displayFavorites = () => {
+        var favs = new Array();
+        let index = 0;
+        let t = "";
+
+        while (favorites != null && index < favorites.length) {
+            if (recipes[favorites[index]].liked) {
+                t = recipes[favorites[index]].title;
+                favs.push(
+                    <Button onClick = {() => handleFilter(t)}>
+                            <Typography variant="h6" component="div">
+                            {recipes[favorites[index]].title} </Typography>
+                </Button> 
+                    
+                );  
+            }
+
+            index++;
+        }
+
+        return (favs);
+
+    };
     const handleScale = (factor: number) => {
         var cleanIngredients = new Array();
         let index = 0;
@@ -561,6 +598,49 @@ const RecipeHelperBody = (_props: any) => {
             newList
         )
     };
+
+    const handleFavorite = () => {
+
+        var newFavs = new Array();
+        
+        currentRecipe.liked = !currentRecipe.liked; //change what it currently looks like
+        console.log("Liked: " + currentRecipe.liked);    
+        let index = 0;
+        let currIndex =  getRecipeIndex(recipes,currentRecipe.title);
+       
+        console.log("current" + recipes[currIndex].title + " aka "+currentRecipe.title);    
+
+        if (favorites != undefined) {
+            if (favorites.includes(currIndex)) {
+                console.log("need to remove " + recipes[currIndex].title + " aka "+currentRecipe.title);    
+                newFavs.pop;
+
+                for (let i = 0; i < favorites.length; i++) {
+
+                    newFavs.push(favorites.pop());
+
+                    if (newFavs.includes(currIndex))
+                    newFavs.pop();
+
+                }
+                setFavorites(newFavs);
+
+            }
+        else {
+            // newFavs.push(favorites?.pop);
+            // newFavs.push(currIndex);
+            favorites.push(currIndex);
+        }
+
+    }
+    else {
+       setFavorites([currIndex]); 
+    }
+    console.log(favorites);    
+
+    };
+
+    
 
     //cleans up listening
     if (transcript.includes("vegan")) {
