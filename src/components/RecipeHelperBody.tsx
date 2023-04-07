@@ -637,7 +637,7 @@ const RecipeHelperBody = (_props: any) => {
             <Grid wrap='wrap' container spacing={4}>
             <AppBar color='inherit' position='sticky'>
             <Grid container spacing={1}>
-                <Grid item xs={2}><Header/></Grid>
+                <Grid onClick = {()=> handleFilter(" ")} item xs={2}><Header/></Grid>
                 <Grid item xs={8}>
                 <TextField name="recipe" variant="outlined" label="recipe title" fullWidth value={postData} onChange={(e) => setPostData(e.target.value)}>
                 </TextField>
