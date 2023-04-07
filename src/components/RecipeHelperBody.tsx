@@ -4,9 +4,9 @@ import SpeechRecognition, {
     useSpeechRecognition,
 } from "react-speech-recognition";
 import { useState } from "react";
-
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import * as recipesData from "./prototype files/recipes_raw/recipes_raw_nosource_ar.json"
-
+import StarIcon from '@mui/icons-material/Star';
 //for speech synth
 import speech from 'speech-js';
 
@@ -14,7 +14,7 @@ import speech from 'speech-js';
 import fillRecipes from "./recipeCards.js";
 
 //for cards
-import { Card, Checkbox, FormControlLabel, FormGroup, Grid, GridListTile, GridListTileBar, Grow, Radio } from "@material-ui/core";
+import { Card, Checkbox, FormControlLabel, FormGroup, Grid, GridListTile, GridListTileBar, Grow, Radio, Slider } from "@material-ui/core";
 // import React, {Component,useEffect, useState} from 'react';
 
 // import { TextField } from '@material-ui/core';
@@ -32,6 +32,8 @@ import useStyles from "./styles";
 import { AppBar, Button, Container, TextField } from "@material-ui/core";
 import { Header } from "./ui/Header";
 
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import SearchIcon from '@mui/icons-material/Search';
 
 interface Recipe {
     title: string;
@@ -140,6 +142,7 @@ const RecipeHelperBody = (_props: any) => {
     const [currentTranscript, setCurrentTranscript] = useState("");
     const [currentRecipe, setCurrentRecipe] = useState<Recipe>(recipes[0]);
     const [filtered, setFiltered] = useState<Recipe[]>(recipes);
+    const [favorites, setFavorites] = useState<number[]>([]);
     const [currentInstruction, setCurrentInstruction] = useState("You haven't started yet!");
 
     const handleFilter = (recipeType: string) => {
@@ -332,15 +335,12 @@ const RecipeHelperBody = (_props: any) => {
     const getNextRecipe = (recipeArr: Recipe[], recipeName?: string) => {
 
         let org_index = getRecipeIndex(recipeArr, recipeName);
-        console.log(currentRecipe);
         if (org_index < recipeArr.length - 1) {
             setCurrentRecipe(recipeArr[org_index + 1]); //changes curr recipe to nexy recipe
             setCurrentInstruction(recipeArr[org_index + 1].instructions[0]); //changes curr instruc to first of recipe
         }
         else
             setMessage("There is no recipe to the left.")
-
-
         return null
     }
 
@@ -452,11 +452,22 @@ const RecipeHelperBody = (_props: any) => {
         let index = 0;
 
         while (index < myRecipe.instructions.length) {
-            cleanIngredients.push(
-                <Typography style={{ marginBottom: 1.5 }}>
-                    {index + 1}. {myRecipe.instructions[index]}
-                </Typography>
-            )
+            
+            if (myRecipe.instructions[index] == currentInstruction) {
+                cleanIngredients.push(
+                    <Typography style={{ marginBottom: 1.5 }}>
+                     <b>   {index + 1}. {myRecipe.instructions[index]} </b>
+                    </Typography>
+                )
+            }
+            else {
+                cleanIngredients.push(
+                    <Typography style={{ marginBottom: 1.5 }}>
+                        {index + 1}. {myRecipe.instructions[index]}
+                    </Typography>
+                )
+            }
+
             index++;
         }
 
@@ -468,7 +479,33 @@ const RecipeHelperBody = (_props: any) => {
 
     //sorry it's way too nested
     //PrimarySearchAppBar look up for more menu nav stuff
+    const favLinks = (ind: number) => {
+        index
+    }
 
+    const displayFavorites = () => {
+        var favs = new Array();
+        let index = 0;
+        let t = "";
+
+        while (favorites != null && index < favorites.length) {
+            if (recipes[favorites[index]].liked) {
+                t = recipes[favorites[index]].title;
+                favs.push(
+                    <Button onClick = {() => handleFilter(t)}>
+                            <Typography variant="h6" component="div">
+                            {recipes[favorites[index]].title} </Typography>
+                </Button> 
+                    
+                );  
+            }
+
+            index++;
+        }
+
+        return (favs);
+
+    };
     const handleScale = (factor: number) => {
         var cleanIngredients = new Array();
         let index = 0;
@@ -541,6 +578,49 @@ const RecipeHelperBody = (_props: any) => {
         )
     };
 
+    const handleFavorite = () => {
+
+        var newFavs = new Array();
+        
+        currentRecipe.liked = !currentRecipe.liked; //change what it currently looks like
+        console.log("Liked: " + currentRecipe.liked);    
+        let index = 0;
+        let currIndex =  getRecipeIndex(recipes,currentRecipe.title);
+       
+        console.log("current" + recipes[currIndex].title + " aka "+currentRecipe.title);    
+
+        if (favorites != undefined) {
+            if (favorites.includes(currIndex)) {
+                console.log("need to remove " + recipes[currIndex].title + " aka "+currentRecipe.title);    
+                newFavs.pop;
+
+                for (let i = 0; i < favorites.length; i++) {
+
+                    newFavs.push(favorites.pop());
+
+                    if (newFavs.includes(currIndex))
+                    newFavs.pop();
+
+                }
+                setFavorites(newFavs);
+
+            }
+        else {
+            // newFavs.push(favorites?.pop);
+            // newFavs.push(currIndex);
+            favorites.push(currIndex);
+        }
+
+    }
+    else {
+       setFavorites([currIndex]); 
+    }
+    console.log(favorites);    
+
+    };
+
+    
+
     //cleans up listening
     if (transcript.includes("vegan")) {
         handleRestrictions(3);
@@ -579,36 +659,10 @@ const RecipeHelperBody = (_props: any) => {
 
             <Card style={{ maxWidth: 300 }}>
                     <CardContent>
-
-            <Button>
-                <Card style={{ maxWidth: 600 }}>
-                    <CardContent>
                         <Typography variant='h3' gutterBottom>
                         </Typography>
                         <Typography variant="h5" component="div">
-                            Next Instruction
-                        </Typography>
-                        <Typography variant="body1" component="div">
-                            {currentInstruction}
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                    </CardActions>
-                </Card>
-            </Button> 
-
-            {/* {currentRecipe.liked ? (
-              <button onClick={() => currentRecipe.liked = true}>
-              <AutoAwesomeIcon htmlColor="yellow" />
-              </button>            ):(
-                <button onClick={() => currentRecipe.liked = true}>
-                <AutoAwesomeIcon htmlColor="green" />
-                </button>
-            )} */}
-                        <Typography variant='h3' gutterBottom>
-                        </Typography>
-                        <Typography variant="h5" component="div">
-                            Recipe Modifications
+                            Filter Modifications
                         </Typography>
                         <Typography variant="h6" component="div">
                             Dietary Retrictions
@@ -618,14 +672,25 @@ const RecipeHelperBody = (_props: any) => {
                         <FormControlLabel control={<Checkbox onClick={() => {handleRestrictions(2)}}/>} label="Vegetarian" />
                         <FormControlLabel control={<Checkbox onClick={() => {handleRestrictions(3)}}/>} label="Vegan" />
                         </FormGroup>
+
+                        <Typography variant="h5" component="div">
+                            Recipe Modifications
+                        </Typography>
+
                         <Typography variant="h6" component="div">
                             Scale
                         </Typography>
-                
+                        <Slider defaultValue={30} step={10} marks min={10} max={110} />
+
+                        <FormControlLabel control={<Checkbox onClick={() => {handleFavorite()}}/>} label="Favorite" />
+
                     </CardContent>
                     <CardActions>
                     </CardActions>
                 </Card>
+                {favorites.toString()}
+                {displayFavorites()}
+
             </div>
             </Grid>
 
@@ -640,9 +705,12 @@ const RecipeHelperBody = (_props: any) => {
                     <CardContent>
                         <Typography variant='h3' gutterBottom>
                         </Typography>
-                        <Typography variant="h4" component="div">
+                        <Grid container spacing={2}>
+                        <Grid item xs={11}><Typography variant="h4" component="div">
                             {myRecipe.title}
-                        </Typography>
+                        </Typography></Grid>
+                        <Grid item xs={1}><StarIcon htmlColor= {currentRecipe.liked ? ("yellow") : ("blue")} onClick= {()=>currentRecipe.liked != currentRecipe.liked}></StarIcon></Grid>
+                        </Grid>
                         <Typography variant="h5" component="div">
                             Ingredients
                         </Typography>
@@ -667,68 +735,6 @@ const RecipeHelperBody = (_props: any) => {
         </Container>
     );
 };
-
-
-// import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-// import AppBar from '@mui/material/AppBar';
-// import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-// import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import { time } from "console";
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
-
 
 
 export default RecipeHelperBody;
