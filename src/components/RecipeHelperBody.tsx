@@ -109,6 +109,7 @@ const recipes = Object.values(recipesData).map((val) => { //fixed current instru
 
 })
 
+// recipes.sort(); eventually sort recipes
 
 const RecipeHelperBody = (_props: any) => {
 
@@ -480,7 +481,7 @@ const RecipeHelperBody = (_props: any) => {
     //sorry it's way too nested
     //PrimarySearchAppBar look up for more menu nav stuff
     const favLinks = (ind: number) => {
-        index
+        
     }
 
     const displayFavorites = () => {
@@ -491,6 +492,7 @@ const RecipeHelperBody = (_props: any) => {
         while (favorites != null && index < favorites.length) {
             if (recipes[favorites[index]].liked) {
                 t = recipes[favorites[index]].title;
+                t = t.toLowerCase();
                 favs.push(
                     <Button onClick = {() => handleFilter(t)}>
                             <Typography variant="h6" component="div">
@@ -531,7 +533,6 @@ const RecipeHelperBody = (_props: any) => {
     const handleRestrictions = (restriction: number) => {
 
         speech.synthesis(`I found a`, 'en-US') // speech synthesis module
-        //Prize Winning Baby Back Ribs
         //further filters the recipe
 
         //None = 0
@@ -592,22 +593,19 @@ const RecipeHelperBody = (_props: any) => {
         if (favorites != undefined) {
             if (favorites.includes(currIndex)) {
                 console.log("need to remove " + recipes[currIndex].title + " aka "+currentRecipe.title);    
-                newFavs.pop;
 
-                for (let i = 0; i < favorites.length; i++) {
+                while (favorites.length > 0) {
 
+                    if (favorites.at(favorites.length-1)==currIndex) 
+                    favorites.pop();
+                    else
                     newFavs.push(favorites.pop());
-
-                    if (newFavs.includes(currIndex))
-                    newFavs.pop();
 
                 }
                 setFavorites(newFavs);
 
             }
         else {
-            // newFavs.push(favorites?.pop);
-            // newFavs.push(currIndex);
             favorites.push(currIndex);
         }
 
@@ -709,7 +707,7 @@ const RecipeHelperBody = (_props: any) => {
                         <Grid item xs={11}><Typography variant="h4" component="div">
                             {myRecipe.title}
                         </Typography></Grid>
-                        <Grid item xs={1}><StarIcon htmlColor= {currentRecipe.liked ? ("yellow") : ("blue")} onClick= {()=>currentRecipe.liked != currentRecipe.liked}></StarIcon></Grid>
+                        <Grid item xs={1}><StarIcon htmlColor= {currentRecipe?.liked ? ("yellow") : ("blue")} onClick= {()=>currentRecipe.liked != currentRecipe.liked}></StarIcon></Grid>
                         </Grid>
                         <Typography variant="h5" component="div">
                             Ingredients
