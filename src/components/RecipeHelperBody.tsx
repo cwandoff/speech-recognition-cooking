@@ -421,15 +421,6 @@ const RecipeHelperBody = (_props: any) => {
         setPostData("");
     };
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        clear();
-    }
-
-
-    const classes = useStyles(); //for styling
-
-
     const makeIngredients = () => {
         var cleanIngredients = new Array();
         let index = 0;
@@ -483,6 +474,24 @@ const RecipeHelperBody = (_props: any) => {
     const favLinks = (ind: number) => {
         
     }
+    const makeFavorites = () => {
+
+        const searched = [];
+
+        for (const f of favorites) {
+            if (f < recipes.length) {
+                if (recipes[f]) {
+                    searched.push(recipes[f])
+                }
+            }
+        }    
+
+        setFiltered(searched);
+        setCurrentRecipe(filtered[0]);
+        setCurrentInstruction(filtered[0].instructions[0]);
+
+    
+    }
 
     const displayFavorites = () => {
         var favs = new Array();
@@ -494,7 +503,7 @@ const RecipeHelperBody = (_props: any) => {
                 t = recipes[favorites[index]].title;
                 t = t.toLowerCase();
                 favs.push(
-                    <Button onClick = {() => handleFilter(t)}>
+                    <Button onClick = {() => makeFavorites()}>
                             <Typography variant="h6" component="div">
                             {recipes[favorites[index]].title} </Typography>
                 </Button> 
