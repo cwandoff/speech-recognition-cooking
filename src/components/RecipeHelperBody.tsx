@@ -130,6 +130,7 @@ const recipes = Object.values(recipesData).map((val) => { //fixed current instru
 
 })
 
+// recipes.sort(); eventually sort recipes
 
 const RecipeHelperBody = (_props: any) => {
 
@@ -473,11 +474,11 @@ const RecipeHelperBody = (_props: any) => {
         let index = 0;
 
         while (index < myRecipe.instructions.length) {
-            
+
             if (myRecipe.instructions[index] == currentInstruction) {
                 cleanIngredients.push(
                     <Typography style={{ marginBottom: 1.5 }}>
-                     <b>   {index + 1}. {myRecipe.instructions[index]} </b>
+                        <b>   {index + 1}. {myRecipe.instructions[index]} </b>
                     </Typography>
                 )
             }
@@ -500,9 +501,9 @@ const RecipeHelperBody = (_props: any) => {
 
     //sorry it's way too nested
     //PrimarySearchAppBar look up for more menu nav stuff
-    // const favLinks = (ind: number) => {
-    //     index
-    // }
+    const favLinks = (ind: number) => {
+
+    }
 
     const displayFavorites = () => {
         var favs = new Array();
@@ -512,13 +513,14 @@ const RecipeHelperBody = (_props: any) => {
         while (favorites != null && index < favorites.length) {
             if (recipes[favorites[index]].liked) {
                 t = recipes[favorites[index]].title;
+                t = t.toLowerCase();
                 favs.push(
-                    <Button onClick = {() => handleFilter(t)}>
-                            <Typography variant="h6" component="div">
+                    <Button onClick={() => handleFilter(t)}>
+                        <Typography variant="h6" component="div">
                             {recipes[favorites[index]].title} </Typography>
-                </Button> 
-                    
-                );  
+                    </Button>
+
+                );
             }
 
             index++;
@@ -552,7 +554,6 @@ const RecipeHelperBody = (_props: any) => {
     const handleRestrictions = (restriction: number) => {
 
         speech.synthesis(`I found a`, 'en-US') // speech synthesis module
-        //Prize Winning Baby Back Ribs
         //further filters the recipe
 
         //None = 0
@@ -602,45 +603,42 @@ const RecipeHelperBody = (_props: any) => {
     const handleFavorite = () => {
 
         var newFavs = new Array();
-        
+
         currentRecipe.liked = !currentRecipe.liked; //change what it currently looks like
-        console.log("Liked: " + currentRecipe.liked);    
+        console.log("Liked: " + currentRecipe.liked);
         let index = 0;
-        let currIndex =  getRecipeIndex(recipes,currentRecipe.title);
-       
-        console.log("current" + recipes[currIndex].title + " aka "+currentRecipe.title);    
+        let currIndex = getRecipeIndex(recipes, currentRecipe.title);
+
+        console.log("current" + recipes[currIndex].title + " aka " + currentRecipe.title);
 
         if (favorites != undefined) {
             if (favorites.includes(currIndex)) {
-                console.log("need to remove " + recipes[currIndex].title + " aka "+currentRecipe.title);    
-                newFavs.pop;
+                console.log("need to remove " + recipes[currIndex].title + " aka " + currentRecipe.title);
 
-                for (let i = 0; i < favorites.length; i++) {
+                while (favorites.length > 0) {
 
-                    newFavs.push(favorites.pop());
-
-                    if (newFavs.includes(currIndex))
-                    newFavs.pop();
+                    if (favorites.at(favorites.length - 1) == currIndex)
+                        favorites.pop();
+                    else
+                        newFavs.push(favorites.pop());
 
                 }
                 setFavorites(newFavs);
 
             }
-        else {
-            // newFavs.push(favorites?.pop);
-            // newFavs.push(currIndex);
-            favorites.push(currIndex);
-        }
+            else {
+                favorites.push(currIndex);
+            }
 
-    }
-    else {
-       setFavorites([currIndex]); 
-    }
-    console.log(favorites);    
+        }
+        else {
+            setFavorites([currIndex]);
+        }
+        console.log(favorites);
 
     };
 
-    
+
 
     //cleans up listening
     if (transcript.includes("vegan")) {
@@ -680,36 +678,10 @@ const RecipeHelperBody = (_props: any) => {
 
                         <Card style={{ maxWidth: 300 }}>
                             <CardContent>
-
-                                <Button>
-                                    <Card style={{ maxWidth: 600 }}>
-                                        <CardContent>
-                                            <Typography variant='h3' gutterBottom>
-                                            </Typography>
-                                            <Typography variant="h5" component="div">
-                                                Next Instruction
-                                            </Typography>
-                                            <Typography variant="body1" component="div">
-                                                {currentInstruction}
-                                            </Typography>
-                                        </CardContent>
-                                        <CardActions>
-                                        </CardActions>
-                                    </Card>
-                                </Button>
-
-                                {/* {currentRecipe.liked ? (
-              <button onClick={() => currentRecipe.liked = true}>
-              <AutoAwesomeIcon htmlColor="yellow" />
-              </button>            ):(
-                <button onClick={() => currentRecipe.liked = true}>
-                <AutoAwesomeIcon htmlColor="green" />
-                </button>
-            )} */}
                                 <Typography variant='h3' gutterBottom>
                                 </Typography>
                                 <Typography variant="h5" component="div">
-                                    Recipe Modifications
+                                    Filter Modifications
                                 </Typography>
                                 <Typography variant="h6" component="div">
                                     Dietary Retrictions
@@ -719,106 +691,200 @@ const RecipeHelperBody = (_props: any) => {
                                     <FormControlLabel control={<Checkbox onClick={() => { handleRestrictions(2) }} />} label="Vegetarian" />
                                     <FormControlLabel control={<Checkbox onClick={() => { handleRestrictions(3) }} />} label="Vegan" />
                                 </FormGroup>
+
+                                <Typography variant="h5" component="div">
+                                    Recipe Modifications
+                                </Typography>
+
                                 <Typography variant="h6" component="div">
                                     Scale
                                 </Typography>
+                                <Slider defaultValue={30} step={10} marks min={10} max={110} />
+
+                                <FormControlLabel control={<Checkbox onClick={() => { handleFavorite() }} />} label="Favorite" />
 
                             </CardContent>
                             <CardActions>
                             </CardActions>
                         </Card>
+                        {favorites.toString()}
+                        {displayFavorites()}
+
                     </div>
                 </Grid>
 
                 <Grid item xs={8}>
 
                     <div>
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                            <IconButton onClick={() => getNextRecipe((filtered == null ? recipes : filtered), currentRecipe?.title)} aria-label="next recipe">
-                                <ArrowCircleLeft />
-                            </IconButton>
-                            <Typography variant="body1" component="div" align="center">
-                                Search Results: {filtered.length} <br></br> Swipe left or right to see other recipes!
-                            </Typography>
-                            <IconButton onClick={() => getPrevRecipe((filtered == null ? recipes : filtered), currentRecipe?.title)} aria-label="previous recipe">
-                                <ArrowCircleRight />
-                            </IconButton>
-                        </div>
+                        <Typography variant="body1" component="div" align="center">
+                            Search Results: {filtered.length} <br></br> Swipe left or right to see other recipes!
+                        </Typography>
                         <div {...handlers}>
                             <Card style={{ maxWidth: 600 }}>
                                 <CardContent>
                                     <Typography variant='h3' gutterBottom>
                                     </Typography>
-                                    <Typography variant="h4" component="div">
-                                        {myRecipe.title}
-                                    </Typography>
-                                    <Typography variant="h5" component="div">
-                                        Ingredients
-                                    </Typography>
-                                    {makeIngredients()}
-                                    <Typography variant="h5" component="div">
-                                        Instructions
-                                    </Typography>
-                                    {makeInstructions()}
-                                </CardContent>
-                                <CardActions>
-                                    {/* <Button onClick={()=>{myRecipe.liked = !myRecipe.liked, console.log(myRecipe.liked)}} size="small">Like this Recipe!</Button> */}
-                                </CardActions>
-                            </Card>
-                        </div>
-                    </div>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={11}><Typography variant="h4" component="div">
+                                            {myRecipe.title}
+                                        </Typography></Grid>
+                                        <Grid item xs={>
+                                            <StarIcon htmlColor={currentRecipe?.liked ? ("yellow") : ("blue")} onClick={() => currentRecipe.liked != currentRecipe.liked}></StarIcon></Grid>
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Button variant="contained" onClick={() => handleFilter(postData)}>
+                                            <SearchIcon />
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+
+                            </AppBar>
+                            <Grid item xs={4}>
+                                {/* <Grid item xs={8}> <p>Al says: {message}</p> </Grid>
+                <Grid item xs={8}> <p>You're saying: {transcript}</p></Grid> */}
+                                <div>
+
+                                    <Card style={{ maxWidth: 300 }}>
+                                        <CardContent>
+
+                                            <Button>
+                                                <Card style={{ maxWidth: 600 }}>
+                                                    <CardContent>
+                                                        <Typography variant='h3' gutterBottom>
+                                                        </Typography>
+                                                        <Typography variant="h5" component="div">
+                                                            Next Instruction
+                                                        </Typography>
+                                                        <Typography variant="body1" component="div">
+                                                            {currentInstruction}
+                                                        </Typography>
+                                                    </CardContent>
+                                                    <CardActions>
+                                                    </CardActions>
+                                                </Card>
+                                            </Button>
+
+                                            {/* {currentRecipe.liked ? (
+              <button onClick={() => currentRecipe.liked = true}>
+              <AutoAwesomeIcon htmlColor="yellow" />
+              </button>            ):(
+                <button onClick={() => currentRecipe.liked = true}>
+                <AutoAwesomeIcon htmlColor="green" />
+                </button>
+            )} */}
+                                            <Typography variant='h3' gutterBottom>
+                                            </Typography>
+                                            <Typography variant="h5" component="div">
+                                                Recipe Modifications
+                                            </Typography>
+                                            <Typography variant="h6" component="div">
+                                                Dietary Retrictions
+                                            </Typography>
+                                            <FormGroup>
+                                                <FormControlLabel control={<Checkbox onClick={() => { handleRestrictions(1) }} />} label="Pescatarian" />
+                                                <FormControlLabel control={<Checkbox onClick={() => { handleRestrictions(2) }} />} label="Vegetarian" />
+                                                <FormControlLabel control={<Checkbox onClick={() => { handleRestrictions(3) }} />} label="Vegan" />
+                                            </FormGroup>
+                                            <Typography variant="h6" component="div">
+                                                Scale
+                                            </Typography>
+
+                                        </CardContent>
+                                        <CardActions>
+                                        </CardActions>
+                                    </Card>
+                                </div>
+                            </Grid>
+
+                            <Grid item xs={8}>
+
+                                <div>
+                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                                        <IconButton onClick={() => getNextRecipe((filtered == null ? recipes : filtered), currentRecipe?.title)} aria-label="next recipe">
+                                            <ArrowCircleLeft />
+                                        </IconButton>
+                                        <Typography variant="body1" component="div" align="center">
+                                            Search Results: {filtered.length} <br></br> Swipe left or right to see other recipes!
+                                        </Typography>
+                                        <IconButton onClick={() => getPrevRecipe((filtered == null ? recipes : filtered), currentRecipe?.title)} aria-label="previous recipe">
+                                            <ArrowCircleRight />
+                                        </IconButton>
+                                    </div>
+                                    <div {...handlers}>
+                                        <Card style={{ maxWidth: 600 }}>
+                                            <CardContent>
+                                                <Typography variant='h3' gutterBottom>
+                                                </Typography>
+                                                <Typography variant="h4" component="div">
+                                                    {myRecipe.title}
+                                                </Typography>
+                                                <Typography variant="h5" component="div">
+                                                    Ingredients
+                                                </Typography>
+                                                {makeIngredients()}
+                                                <Typography variant="h5" component="div">
+                                                    Instructions
+                                                </Typography>
+                                                {makeInstructions()}
+                                            </CardContent>
+                                            <CardActions>
+                                                {/* <Button onClick={()=>{myRecipe.liked = !myRecipe.liked, console.log(myRecipe.liked)}} size="small">Like this Recipe!</Button> */}
+                                            </CardActions>
+                                        </Card>
+                                    </div>
+                                </div>
 
 
-                </Grid>
-            </Grid>
+                            </Grid>
+                        </Grid>
 
 
-        </Container >
-    );
+                    </Container >
+                    );
 };
 
 
 
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
+                    const Search = styled('div')(({theme}) => ({
+                        position: 'relative',
+                    borderRadius: theme.shape.borderRadius,
+                    backgroundColor: alpha(theme.palette.common.white, 0.15),
+                    '&:hover': {
+                        backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
+                    marginRight: theme.spacing(2),
+                    marginLeft: 0,
+                    width: '100%',
+                    [theme.breakpoints.up('sm')]: {
+                        marginLeft: theme.spacing(3),
+                    width: 'auto',
     },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+                    const SearchIconWrapper = styled('div')(({theme}) => ({
+                        padding: theme.spacing(0, 2),
+                    height: '100%',
+                    position: 'absolute',
+                    pointerEvents: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
+                    const StyledInputBase = styled(InputBase)(({theme}) => ({
+                        color: 'inherit',
+                    '& .MuiInputBase-input': {
+                        padding: theme.spacing(1, 1, 1, 0),
+                    // vertical padding + font size from searchIcon
+                    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+                    transition: theme.transitions.create('width'),
+                    width: '100%',
+                    [theme.breakpoints.up('md')]: {
+                        width: '20ch',
         },
     },
 }));
 
 
 
-export default RecipeHelperBody;
+                    export default RecipeHelperBody;
