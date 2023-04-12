@@ -505,6 +505,8 @@ const RecipeHelperBody = (_props: any) => {
   };
 
   const handleRestrictions = (restriction: number) => {
+
+
  
     speech.synthesis(`I found a`, "en-US"); // speech synthesis module
     //further filters the recipe
@@ -520,7 +522,8 @@ const RecipeHelperBody = (_props: any) => {
     let orgRec = 0;
 
     while (index < filtered.length) {
-      if (filtered[index].vegan) {
+
+        if (filtered[index].vegan) {
         newList.push(filtered[index]);
       } else if (filtered[index].veg && restriction <= 2) {
         newList.push(filtered[index]);
@@ -541,10 +544,16 @@ const RecipeHelperBody = (_props: any) => {
         )
           orgRec = newList.length - 1;
       }
+
+      if (newList.at(newList.length-1) ==  saveCurrRep) {
+        found = true;
+        orgRec = newList.length-1;
+    }
+
     }
 
     setFiltered(newList);
-    setCurrentRecipe(filtered[orgRec]); //reset current recipe if qualifies
+    setCurrentRecipe(filtered[0]); //reset current recipe if qualifies
     setCurrentInstruction(currentRecipe.instructions[0]);
 
     return newList;
@@ -732,6 +741,7 @@ const RecipeHelperBody = (_props: any) => {
                     Instructions
                   </Typography>
                   {makeInstructions()}
+                  Page: {getRecipeIndex(filtered,currentRecipe.title)+1} / {filtered.length}
                 </CardContent>
                 <CardActions></CardActions>
               </Card>
