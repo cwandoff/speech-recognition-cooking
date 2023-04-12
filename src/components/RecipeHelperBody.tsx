@@ -48,7 +48,7 @@ import { useSwipeable } from "react-swipeable";
 import Typography from "@mui/material/Typography";
 import { AppBar, Button, Container, TextField } from "@material-ui/core";
 import { Header } from "./ui/Header";
-import { ArrowCircleLeft, ArrowCircleRight, Star } from "@mui/icons-material";
+import { ArrowCircleLeft, ArrowCircleRight, Favorite, FavoriteBorder, Star } from "@mui/icons-material";
 
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import SearchIcon from "@mui/icons-material/Search";
@@ -154,6 +154,7 @@ const RecipeHelperBody = (_props: any) => {
   const [currentRecipe, setCurrentRecipe] = useState<Recipe>(recipes[0]);
   const [filtered, setFiltered] = useState<Recipe[]>(recipes);
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [keyword, setKeyword] =  useState(" ");
   const [currentInstruction, setCurrentInstruction] = useState(
     "You haven't started yet!"
   );
@@ -161,6 +162,8 @@ const RecipeHelperBody = (_props: any) => {
   const handleFilter = (recipeType: string) => {
     // recipeType = ' '+recipeType;
     const searched = [];
+
+    setKeyword(recipeType);
 
     for (const r of recipes) {
       if (r.title != undefined) {
@@ -407,12 +410,6 @@ const RecipeHelperBody = (_props: any) => {
 
   if (currentRecipe != null) myRecipe = currentRecipe;
 
-  for (const i of myRecipe.ingredients) {
-    {
-      i;
-    }
-  }
-
   SpeechRecognition.startListening({ continuous: true });
 
   //handle form
@@ -506,24 +503,9 @@ const RecipeHelperBody = (_props: any) => {
 
     return favs;
   };
-  const handleScale = (factor: number) => {
-    var cleanIngredients = new Array();
-    let index = 0;
-
-    while (index < myRecipe.ingredients.length) {
-      if (myRecipe.ingredients[index])
-        cleanIngredients.push(
-          <Typography style={{ marginBottom: 1.5 }} color="textSecondary">
-            {myRecipe.ingredients[index]}
-          </Typography>
-        );
-      index++;
-    }
-
-    return cleanIngredients;
-  };
 
   const handleRestrictions = (restriction: number) => {
+ 
     speech.synthesis(`I found a`, "en-US"); // speech synthesis module
     //further filters the recipe
 
@@ -603,12 +585,6 @@ const RecipeHelperBody = (_props: any) => {
     console.log(favorites);
   };
 
-  //cleans up listening
-  if (transcript.includes("vegan")) {
-    handleRestrictions(3);
-    resetTranscript();
-  }
-
   if (transcript.length > 100) {
     resetTranscript();
   }
@@ -684,31 +660,12 @@ const RecipeHelperBody = (_props: any) => {
                     label="Vegan"
                   />
                 </FormGroup>
-
-                <Typography variant="h5" component="div">
-                  Recipe Modifications
-                </Typography>
-
-                <Typography variant="h6" component="div">
-                  Scale
-                </Typography>
-                <Slider defaultValue={30} step={10} marks min={10} max={110} />
-
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      onClick={() => {
-                        handleFavorite();
-                      }}
-                    />
-                  }
-                  label="Favorite"
-                />
+                <Typography variant="h5" component="div">Favorites</Typography>
+                {favorites.toString()}
+                {displayFavorites()}
               </CardContent>
               <CardActions></CardActions>
             </Card>
-            {favorites.toString()}
-            {displayFavorites()}
           </div>
         </Grid>
 
@@ -755,6 +712,18 @@ const RecipeHelperBody = (_props: any) => {
                   <Typography variant="h4" component="div">
                     {myRecipe.title}
                   </Typography>
+                  <FormControlLabel
+                  control={
+                    <Checkbox 
+                    checked={currentRecipe.liked ? (true) : (false)}
+                    icon={<FavoriteBorder />} checkedIcon={<Favorite />}
+                      onClick={() => {
+                        handleFavorite();
+                      }}
+                    />
+                  }
+                  label="Favorite"
+                />
                   <Typography variant="h5" component="div">
                     Ingredients
                   </Typography>
