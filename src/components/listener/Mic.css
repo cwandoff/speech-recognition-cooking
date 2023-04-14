@@ -1,0 +1,52 @@
+#icon {
+  border-radius: 50%;
+  background-color: grey;
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  /*top: 30px;
+  right: 50px; */
+  bottom: 30px;
+  right: 40px;
+
+  /*
+  -webkit-transition: "all 1.0s linear";
+  -moz-transition: "all 1.0s linear"; 
+  transition: "all 1.0s linear";*/
+}
+
+/*.icon: {
+  -webkit-animation: listening 1.0s linear forwards;
+  animation: listening 1.0s linear forwards;
+}  
+
+
+.on {
+  -webkit-animation: listening 1.0s linear forwards;
+  animation: listening 1.0s linear forwards;
+} 
+
+.off {
+  -webkit-animation: idle 1.0s linear forwards;
+  animation: idle 1.0s linear forwards;
+}  
+*/
+
+@keyframes listening {
+  from {
+    background-color: rgb(143, 142, 142);
+  }
+  to {
+    background-color: rgb(69, 143, 69);
+  }
+}
+
+@keyframes idle {
+  from {
+    background-color: rgb(69, 143, 69);
+  }
+  to {
+    background-color: rgb(143, 142, 142);
+  }
+
+}
