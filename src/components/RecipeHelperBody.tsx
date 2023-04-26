@@ -1,5 +1,7 @@
-import * as React from "react";
-import SpeechRecognition, { useSpeechRecognition,} from "react-speech-recognition";
+// import * as React from "react";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 import { useState } from "react";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import * as recipesData from "./prototype files/recipes_raw/recipes_raw_nosource_ar.json";
@@ -25,7 +27,7 @@ import { time } from "console";
 import speech from "speech-js";
 
 //for displaying all the filtered recipies
-import fillRecipes from "./recipeCards.js";
+// import fillRecipes from "./recipeCards.js";
 
 //for cards
 import {
@@ -48,21 +50,18 @@ import { useSwipeable } from "react-swipeable";
 import Typography from "@mui/material/Typography";
 import { AppBar, Button, Container, TextField } from "@material-ui/core";
 import { Header } from "./ui/Header";
-import { ArrowCircleLeft, ArrowCircleRight, Favorite, FavoriteBorder, Star } from "@mui/icons-material";
+import {
+  ArrowCircleLeft,
+  ArrowCircleRight,
+  Favorite,
+  FavoriteBorder,
+  Star,
+} from "@mui/icons-material";
 
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import SearchIcon from "@mui/icons-material/Search";
-
-interface Recipe {
-  title: string;
-  ingredients: string[];
-  instructions: string[];
-  picture_link: string;
-  liked: boolean;
-  veg: boolean; //dietary restrictions
-  vegan: boolean;
-  pesc: boolean;
-}
+import { Recipe } from "../types";
+import { RecipeCard } from "./ui/recipeCard";
 
 const recipes = Object.values(recipesData).map((val) => {
   //fixed current instruction
@@ -112,7 +111,6 @@ const recipes = Object.values(recipesData).map((val) => {
   } as Recipe;
 });
 
-
 const RecipeHelperBody = (_props: any) => {
   //implement swiper https://www.npmjs.com/package/react-swipeable
   const handlers = useSwipeable({
@@ -154,7 +152,7 @@ const RecipeHelperBody = (_props: any) => {
   const [currentRecipe, setCurrentRecipe] = useState<Recipe>(recipes[0]);
   const [filtered, setFiltered] = useState<Recipe[]>(recipes);
   const [favorites, setFavorites] = useState<number[]>([]);
-  const [keyword, setKeyword] =  useState(" ");
+  const [keyword, setKeyword] = useState(" ");
   const [currentInstruction, setCurrentInstruction] = useState(
     "You haven't started yet!"
   );
@@ -505,9 +503,6 @@ const RecipeHelperBody = (_props: any) => {
   };
 
   const handleRestrictions = (restriction: number) => {
-
-
- 
     speech.synthesis(`I found a`, "en-US"); // speech synthesis module
     //further filters the recipe
 
@@ -522,8 +517,7 @@ const RecipeHelperBody = (_props: any) => {
     let orgRec = 0;
 
     while (index < filtered.length) {
-
-        if (filtered[index].vegan) {
+      if (filtered[index].vegan) {
         newList.push(filtered[index]);
       } else if (filtered[index].veg && restriction <= 2) {
         newList.push(filtered[index]);
@@ -545,11 +539,10 @@ const RecipeHelperBody = (_props: any) => {
           orgRec = newList.length - 1;
       }
 
-      if (newList.at(newList.length-1) ==  saveCurrRep) {
+      if (newList.at(newList.length - 1) == saveCurrRep) {
         found = true;
-        orgRec = newList.length-1;
-    }
-
+        orgRec = newList.length - 1;
+      }
     }
 
     setFiltered(newList);
@@ -597,6 +590,28 @@ const RecipeHelperBody = (_props: any) => {
   if (transcript.length > 100) {
     resetTranscript();
   }
+
+  const favoriteTest = () => {
+    console.log("favorites: ");
+    favorites.map((fav) => {
+      console.log(fav);
+    });
+  };
+
+  // const handleFavorite = () => {
+  //   let favs = new Array();
+  //   recipes.map((recipe) => {
+  //     if (recipe.liked) {
+  //       favs.push(getRecipeIndex(recipes, currentRecipe.title));
+  //     }
+  //   });
+  //   if (favs.length > 0) {
+  //     setFavorites(favs);
+  //   }
+  // };
+
+  // handleFavorite();
+  favoriteTest();
 
   return (
     <Container>
@@ -669,7 +684,9 @@ const RecipeHelperBody = (_props: any) => {
                     label="Vegan"
                   />
                 </FormGroup>
-                <Typography variant="h5" component="div">Favorites</Typography>
+                <Typography variant="h5" component="div">
+                  Favorites
+                </Typography>
                 {favorites.toString()}
                 {displayFavorites()}
               </CardContent>
@@ -715,24 +732,32 @@ const RecipeHelperBody = (_props: any) => {
               </IconButton>
             </div>
             <div {...handlers}>
-              <Card style={{ maxWidth: 600 }}>
+              <RecipeCard
+                myRecipe={currentRecipe}
+                recipeIndex={getRecipeIndex(filtered, currentRecipe.title) + 1}
+                listLength={filtered.length}
+                favorite={currentRecipe.liked}
+              />
+
+              {/* <Card style={{ maxWidth: 600 }}>
                 <CardContent>
                   <Typography variant="h3" gutterBottom></Typography>
                   <Typography variant="h4" component="div">
                     {myRecipe.title}
                   </Typography>
                   <FormControlLabel
-                  control={
-                    <Checkbox 
-                    checked={currentRecipe.liked ? (true) : (false)}
-                    icon={<FavoriteBorder />} checkedIcon={<Favorite />}
-                      onClick={() => {
-                        handleFavorite();
-                      }}
-                    />
-                  }
-                  label="Favorite"
-                />
+                    control={
+                      <Checkbox
+                        checked={currentRecipe.liked ? true : false}
+                        icon={<FavoriteBorder />}
+                        checkedIcon={<Favorite />}
+                        onClick={() => {
+                          handleFavorite();
+                        }}
+                      />
+                    }
+                    label="Favorite"
+                  />
                   <Typography variant="h5" component="div">
                     Ingredients
                   </Typography>
@@ -741,10 +766,11 @@ const RecipeHelperBody = (_props: any) => {
                     Instructions
                   </Typography>
                   {makeInstructions()}
-                  Page: {getRecipeIndex(filtered,currentRecipe.title)+1} / {filtered.length}
+                  Page: {getRecipeIndex(filtered, currentRecipe.title) +
+                    1} / {filtered.length}
                 </CardContent>
                 <CardActions></CardActions>
-              </Card>
+              </Card> */}
             </div>
           </Grid>
         </Grid>
