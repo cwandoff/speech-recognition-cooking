@@ -152,6 +152,7 @@ const RecipeHelperBody = (_props: any) => {
   const [currentRecipe, setCurrentRecipe] = useState<Recipe>(recipes[0]);
   const [filtered, setFiltered] = useState<Recipe[]>(recipes);
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [restrictions, setRestrictions] = useState<boolean[]>([false,false,false]);
   const [keyword, setKeyword] = useState(" ");
   const [currentInstruction, setCurrentInstruction] = useState(
     "You haven't started yet!"
@@ -162,6 +163,7 @@ const RecipeHelperBody = (_props: any) => {
     const searched = [];
 
     setKeyword(recipeType);
+    resetTranscript(); //it got the keyword it needed.
 
     for (const r of recipes) {
       if (r.title != undefined) {
@@ -503,6 +505,16 @@ const RecipeHelperBody = (_props: any) => {
   };
 
   const handleRestrictions = (restriction: number) => {
+
+    if (restrictions[restriction-1]) {
+      let title = currentRecipe.title;
+      setFiltered(recipes)
+      setCurrentRecipe(filtered[getRecipeIndex(filtered,title)])
+      restrictions[restriction] = false;
+      return;
+    }
+
+    restrictions[restriction-1] = true;
     speech.synthesis(`I found a`, "en-US"); // speech synthesis module
     //further filters the recipe
 
@@ -654,10 +666,11 @@ const RecipeHelperBody = (_props: any) => {
                 </Typography>
                 <FormGroup>
                   <FormControlLabel
+    
                     control={
                       <Checkbox
-                        onClick={() => {
-                          handleRestrictions(1);
+                      onClick={(event) => {
+                        handleRestrictions(1);
                         }}
                       />
                     }
