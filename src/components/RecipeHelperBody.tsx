@@ -597,6 +597,7 @@ const RecipeHelperBody = (_props: any) => {
       setFavorites([currIndex]);
     }
     console.log(favorites);
+
   };
 
   if (transcript.length > 100) {

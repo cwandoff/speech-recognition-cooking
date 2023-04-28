@@ -71,13 +71,16 @@ export const RecipeCard: FC<recipeCardProps> = ({
     return cleanIngredients;
   };
 
-  const handleFavorite = () => {
+  const handleFavorite = (title: string) => {
     if (favorite) {
        favorite = false;
+       alert(title + ' has been unfavorited! \n Sometimes the icon is a little slow, swipe between recipes to see the updated favorited status.');
     } else if (!favorite) {
       favorite = true;
+      alert(title + ' has been favorited! \n Sometimes the icon is a little slow, swipe between recipes to see the updated favorited status.');
     }
     myRecipe.liked = favorite;
+
   };
 
   return (
@@ -94,7 +97,7 @@ export const RecipeCard: FC<recipeCardProps> = ({
               icon={<FavoriteBorder />}
               checkedIcon={<Favorite />}
               onClick={() => {
-                handleFavorite();
+                handleFavorite(myRecipe.title);
               }}
             />
           }
