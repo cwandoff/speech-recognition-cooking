@@ -510,12 +510,11 @@ const RecipeHelperBody = (_props: any) => {
       let title = currentRecipe.title;
       setFiltered(recipes)
       setCurrentRecipe(filtered[getRecipeIndex(filtered,title)])
-      restrictions[restriction] = false;
+      restrictions[restriction-1] = false;
       return;
     }
 
     restrictions[restriction-1] = true;
-    speech.synthesis(`I found a`, "en-US"); // speech synthesis module
     //further filters the recipe
 
     //None = 0
@@ -611,6 +610,24 @@ const RecipeHelperBody = (_props: any) => {
     });
   };
 
+
+  const handleHeaderClick = () => { 
+          handleFilter(" ")
+
+     if (restrictions[0])
+          handleRestrictions(1)
+
+      if (restrictions[1])
+          handleRestrictions(2)
+
+
+      if (restrictions[2])
+          handleRestrictions(3)
+
+          // handleFilter(" ")
+
+  };
+
   // const handleFavorite = () => {
   //   let favs = new Array();
   //   recipes.map((recipe) => {
@@ -631,7 +648,7 @@ const RecipeHelperBody = (_props: any) => {
       <Grid wrap="wrap" container spacing={4}>
         <AppBar color="inherit" position="sticky">
           <Grid container spacing={1}>
-            <Grid onClick={() => handleFilter(" ")} item xs={2}>
+            <Grid onClick={() => handleHeaderClick()} item xs={2}>
               <Header />
             </Grid>
             <Grid item xs={8}>

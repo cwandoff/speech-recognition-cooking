@@ -74,10 +74,10 @@ export const RecipeCard: FC<recipeCardProps> = ({
   const handleFavorite = (title: string) => {
     if (favorite) {
        favorite = false;
-       alert(title + ' has been unfavorited! \n Sometimes the icon is a little slow, swipe between recipes to see the updated favorited status.');
+       alert(title + ' has been unfavorited! \n \n Sometimes the icon is a little slow, swipe between recipes to see the updated favorited status.');
     } else if (!favorite) {
       favorite = true;
-      alert(title + ' has been favorited! \n Sometimes the icon is a little slow, swipe between recipes to see the updated favorited status.');
+      alert(title + ' has been favorited! \n \n Sometimes the icon is a little slow, swipe between recipes to see the updated favorited status.');
     }
     myRecipe.liked = favorite;
 
@@ -111,7 +111,7 @@ export const RecipeCard: FC<recipeCardProps> = ({
           Instructions
         </Typography>
         {makeInstructions()}
-        Page: {recipeIndex} / {listLength}
+        Page: {recipeIndex % listLength} / {listLength}
       </CardContent>
     </Card>
   );
