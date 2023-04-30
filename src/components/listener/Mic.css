@@ -3,11 +3,12 @@
   background-color: grey;
   width: 70px;
   height: 70px;
-  position: absolute;
-  /*top: 30px;
+  position: fixed;
+  /*position: absolute;
+  top: 30px;
   right: 50px; */
-  bottom: 30px;
-  right: 40px;
+  bottom: 20px;
+  right: 30px;
 
   /*
   -webkit-transition: "all 1.0s linear";
