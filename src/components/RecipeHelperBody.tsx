@@ -3,25 +3,11 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { useState } from "react";
-import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import * as recipesData from "./prototype files/recipes_raw/recipes_raw_nosource_ar.json";
 
 // import * as React from 'react';
-import { styled, alpha } from "@mui/material/styles";
-import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 // import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import { time } from "console";
 
 //for speech synth
 import speech from "speech-js";
@@ -36,13 +22,7 @@ import {
   FormControlLabel,
   FormGroup,
   Grid,
-  GridListTile,
-  GridListTileBar,
-  Grow,
-  Radio,
-  Slider,
 } from "@material-ui/core";
-import Box from "@mui/material/Box";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 // import Button from '@mui/material/Button';
@@ -53,12 +33,8 @@ import { Header } from "./ui/Header";
 import {
   ArrowCircleLeft,
   ArrowCircleRight,
-  Favorite,
-  FavoriteBorder,
-  Star,
 } from "@mui/icons-material";
 
-import StarBorderIcon from "@mui/icons-material/StarBorder";
 import SearchIcon from "@mui/icons-material/Search";
 import { Recipe } from "../types";
 import { RecipeCard } from "./ui/recipeCard";
