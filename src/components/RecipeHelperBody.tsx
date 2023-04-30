@@ -128,6 +128,7 @@ const RecipeHelperBody = (_props: any) => {
   const [currentRecipe, setCurrentRecipe] = useState<Recipe>(recipes[0]);
   const [filtered, setFiltered] = useState<Recipe[]>(recipes);
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [restrictions, setRestrictions] = useState<boolean[]>([false,false,false]);
   const [keyword, setKeyword] = useState(" ");
   const [currentInstruction, setCurrentInstruction] = useState(
     "You haven't started yet!"
@@ -138,6 +139,7 @@ const RecipeHelperBody = (_props: any) => {
     const searched = [];
 
     setKeyword(recipeType);
+    resetTranscript(); //it got the keyword it needed.
 
     for (const r of recipes) {
       if (r.title != undefined) {
@@ -479,7 +481,16 @@ const RecipeHelperBody = (_props: any) => {
   };
 
   const handleRestrictions = (restriction: number) => {
-    speech.synthesis(`I found a`, "en-US"); // speech synthesis module
+
+    if (restrictions[restriction-1]) {
+      let title = currentRecipe.title;
+      setFiltered(recipes)
+      setCurrentRecipe(filtered[getRecipeIndex(filtered,title)])
+      restrictions[restriction-1] = false;
+      return;
+    }
+
+    restrictions[restriction-1] = true;
     //further filters the recipe
 
     //None = 0
@@ -561,6 +572,7 @@ const RecipeHelperBody = (_props: any) => {
       setFavorites([currIndex]);
     }
     console.log(favorites);
+
   };
 
   if (transcript.length > 100) {
@@ -572,6 +584,24 @@ const RecipeHelperBody = (_props: any) => {
     favorites.map((fav) => {
       console.log(fav);
     });
+  };
+
+
+  const handleHeaderClick = () => { 
+          handleFilter(" ")
+
+     if (restrictions[0])
+          handleRestrictions(1)
+
+      if (restrictions[1])
+          handleRestrictions(2)
+
+
+      if (restrictions[2])
+          handleRestrictions(3)
+
+          // handleFilter(" ")
+
   };
 
   // const handleFavorite = () => {
@@ -594,7 +624,7 @@ const RecipeHelperBody = (_props: any) => {
       <Grid wrap="wrap" container spacing={4}>
         <AppBar color="inherit" position="sticky">
           <Grid container spacing={1}>
-            <Grid onClick={() => handleFilter(" ")} item xs={2}>
+            <Grid onClick={() => handleHeaderClick()} item xs={2}>
               <Header />
             </Grid>
             <Grid item xs={8}>
@@ -630,10 +660,11 @@ const RecipeHelperBody = (_props: any) => {
                 </Typography>
                 <FormGroup>
                   <FormControlLabel
+    
                     control={
                       <Checkbox
-                        onClick={() => {
-                          handleRestrictions(1);
+                      onClick={(event) => {
+                        handleRestrictions(1);
                         }}
                       />
                     }
