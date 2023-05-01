@@ -30,10 +30,7 @@ import { useSwipeable } from "react-swipeable";
 import Typography from "@mui/material/Typography";
 import { AppBar, Button, Container, TextField } from "@material-ui/core";
 import { Header } from "./ui/Header";
-import {
-  ArrowCircleLeft,
-  ArrowCircleRight,
-} from "@mui/icons-material";
+import { ArrowCircleLeft, ArrowCircleRight } from "@mui/icons-material";
 
 import SearchIcon from "@mui/icons-material/Search";
 import { Recipe } from "../types";
@@ -128,7 +125,11 @@ const RecipeHelperBody = (_props: any) => {
   const [currentRecipe, setCurrentRecipe] = useState<Recipe>(recipes[0]);
   const [filtered, setFiltered] = useState<Recipe[]>(recipes);
   const [favorites, setFavorites] = useState<number[]>([]);
-  const [restrictions, setRestrictions] = useState<boolean[]>([false,false,false]);
+  const [restrictions, setRestrictions] = useState<boolean[]>([
+    false,
+    false,
+    false,
+  ]);
   const [keyword, setKeyword] = useState(" ");
   const [currentInstruction, setCurrentInstruction] = useState(
     "You haven't started yet!"
@@ -206,6 +207,7 @@ const RecipeHelperBody = (_props: any) => {
 
     return null;
   };
+
   const firstStep = () => {
     speech.synthesis(
       `The first step is  ${currentRecipe?.instructions[0]} `,
@@ -353,7 +355,7 @@ const RecipeHelperBody = (_props: any) => {
     },
     {
       command: "Start (the) :recipe recipe",
-      callback: (recipe: any) => handleStart(recipe),
+      callback: () => handleStart(currentRecipe.title),
     },
     {
       command: "(what's the) next (step)",
@@ -460,37 +462,32 @@ const RecipeHelperBody = (_props: any) => {
     var favs = new Array();
     let index = 0;
     let t = "";
-
-    while (favorites != null && index < favorites.length) {
-      if (recipes[favorites[index]].liked) {
-        t = recipes[favorites[index]].title;
+    recipes.map((recipe) => {
+      if (recipe.liked) {
+        t = recipe.title;
         t = t.toLowerCase();
         favs.push(
           <Button onClick={() => makeFavorites()}>
             <Typography variant="h6" component="div">
-              {recipes[favorites[index]].title}{" "}
+              {recipe.title}{" "}
             </Typography>
           </Button>
         );
       }
-
-      index++;
-    }
-
+    });
     return favs;
   };
 
   const handleRestrictions = (restriction: number) => {
-
-    if (restrictions[restriction-1]) {
+    if (restrictions[restriction - 1]) {
       let title = currentRecipe.title;
-      setFiltered(recipes)
-      setCurrentRecipe(filtered[getRecipeIndex(filtered,title)])
-      restrictions[restriction-1] = false;
+      setFiltered(recipes);
+      setCurrentRecipe(filtered[getRecipeIndex(filtered, title)]);
+      restrictions[restriction - 1] = false;
       return;
     }
 
-    restrictions[restriction-1] = true;
+    restrictions[restriction - 1] = true;
     //further filters the recipe
 
     //None = 0
@@ -572,37 +569,25 @@ const RecipeHelperBody = (_props: any) => {
       setFavorites([currIndex]);
     }
     console.log(favorites);
-
   };
 
   if (transcript.length > 100) {
     resetTranscript();
   }
 
-  const favoriteTest = () => {
-    console.log("favorites: ");
-    favorites.map((fav) => {
-      console.log(fav);
-    });
+  const handleHeaderClick = () => {
+    handleFilter(" ");
+
+    if (restrictions[0]) handleRestrictions(1);
+
+    if (restrictions[1]) handleRestrictions(2);
+
+    if (restrictions[2]) handleRestrictions(3);
+
+    // handleFilter(" ")
   };
 
-
-  const handleHeaderClick = () => { 
-          handleFilter(" ")
-
-     if (restrictions[0])
-          handleRestrictions(1)
-
-      if (restrictions[1])
-          handleRestrictions(2)
-
-
-      if (restrictions[2])
-          handleRestrictions(3)
-
-          // handleFilter(" ")
-
-  };
+  
 
   // const handleFavorite = () => {
   //   let favs = new Array();
@@ -617,7 +602,7 @@ const RecipeHelperBody = (_props: any) => {
   // };
 
   // handleFavorite();
-  favoriteTest();
+
 
   return (
     <Container>
@@ -660,11 +645,10 @@ const RecipeHelperBody = (_props: any) => {
                 </Typography>
                 <FormGroup>
                   <FormControlLabel
-    
                     control={
                       <Checkbox
-                      onClick={(event) => {
-                        handleRestrictions(1);
+                        onClick={(event) => {
+                          handleRestrictions(1);
                         }}
                       />
                     }
@@ -745,39 +729,6 @@ const RecipeHelperBody = (_props: any) => {
                 listLength={filtered.length}
                 favorite={currentRecipe.liked}
               />
-
-              {/* <Card style={{ maxWidth: 600 }}>
-                <CardContent>
-                  <Typography variant="h3" gutterBottom></Typography>
-                  <Typography variant="h4" component="div">
-                    {myRecipe.title}
-                  </Typography>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={currentRecipe.liked ? true : false}
-                        icon={<FavoriteBorder />}
-                        checkedIcon={<Favorite />}
-                        onClick={() => {
-                          handleFavorite();
-                        }}
-                      />
-                    }
-                    label="Favorite"
-                  />
-                  <Typography variant="h5" component="div">
-                    Ingredients
-                  </Typography>
-                  {makeIngredients()}
-                  <Typography variant="h5" component="div">
-                    Instructions
-                  </Typography>
-                  {makeInstructions()}
-                  Page: {getRecipeIndex(filtered, currentRecipe.title) +
-                    1} / {filtered.length}
-                </CardContent>
-                <CardActions></CardActions>
-              </Card> */}
             </div>
           </Grid>
         </Grid>
