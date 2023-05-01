@@ -72,109 +72,109 @@ export const RecipeCard: FC<recipeCardProps> = ({
     return cleanIngredients;
   };
 
-  const CheckList = () => {
-    var cleanIngredients = new Array();
-    let index = 0;
-    while (index < myRecipe.ingredients.length) {
-      /*if (myRecipe.ingredients[index].includes("ounce)")) {
-          cleanIngredients.push(myRecipe.ingredients[index].split("ounce)").pop() );
+  // const CheckList = () => {
+  //   var cleanIngredients = new Array();
+  //   let index = 0;
+  //   while (index < myRecipe.ingredients.length) {
+  //     /*if (myRecipe.ingredients[index].includes("ounce)")) {
+  //         cleanIngredients.push(myRecipe.ingredients[index].split("ounce)").pop() );
           
-        } */
-      if (myRecipe.ingredients[index].includes("ounce) cans")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("ounce) cans").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("ounce) can")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("ounce) can").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("ounce) packages")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("ounce) packages").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("ounce) package")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("ounce) package").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("cups")) {
-        //myRecipe.ingredients[index].split("cups").pop();
-        cleanIngredients.push(myRecipe.ingredients[index].split("cups").pop());
-      } else if (myRecipe.ingredients[index].includes("cup")) {
-        //cleanIngredients.push({(myRecipe.ingredients[index]).split(find).pop()});
-        cleanIngredients.push(myRecipe.ingredients[index].split("cup").pop());
-      } else if (myRecipe.ingredients[index].includes("cans")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("cans").pop());
-      } else if (myRecipe.ingredients[index].includes("can")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("can").pop());
-      } else if (myRecipe.ingredients[index].includes("ounces")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("ounces").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("ounce")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("ounce").pop());
-      } else if (myRecipe.ingredients[index].includes("pounds")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("pounds").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("pound")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("pound").pop());
-      } else if (myRecipe.ingredients[index].includes("packages")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("packages").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("package")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("package").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("teaspoons")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("teaspoons").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("teaspoon")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("teaspoon").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("cloves")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("cloves").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("clove")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("clove").pop());
-      } else if (myRecipe.ingredients[index].includes("tablespoons")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("tablespoons").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("tablespoon")) {
-        cleanIngredients.push(
-          myRecipe.ingredients[index].split("tablespoon").pop()
-        );
-      } else if (myRecipe.ingredients[index].includes("1")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("1").pop());
-      } else if (myRecipe.ingredients[index].includes("2")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("2").pop());
-      } else if (myRecipe.ingredients[index].includes("3")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("3").pop());
-      } else if (myRecipe.ingredients[index].includes("4")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("4").pop());
-      } else if (myRecipe.ingredients[index].includes("5")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("5").pop());
-      } else if (myRecipe.ingredients[index].includes("6")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("6").pop());
-      } else if (myRecipe.ingredients[index].includes("7")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("7").pop());
-      } else if (myRecipe.ingredients[index].includes("8")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("8").pop());
-      } else if (myRecipe.ingredients[index].includes("9")) {
-        cleanIngredients.push(myRecipe.ingredients[index].split("9").pop());
-      } else {
-        cleanIngredients.push(myRecipe.ingredients[index]);
-      }
+  //       } */
+  //     if (myRecipe.ingredients[index].includes("ounce) cans")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("ounce) cans").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("ounce) can")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("ounce) can").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("ounce) packages")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("ounce) packages").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("ounce) package")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("ounce) package").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("cups")) {
+  //       //myRecipe.ingredients[index].split("cups").pop();
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("cups").pop());
+  //     } else if (myRecipe.ingredients[index].includes("cup")) {
+  //       //cleanIngredients.push({(myRecipe.ingredients[index]).split(find).pop()});
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("cup").pop());
+  //     } else if (myRecipe.ingredients[index].includes("cans")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("cans").pop());
+  //     } else if (myRecipe.ingredients[index].includes("can")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("can").pop());
+  //     } else if (myRecipe.ingredients[index].includes("ounces")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("ounces").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("ounce")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("ounce").pop());
+  //     } else if (myRecipe.ingredients[index].includes("pounds")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("pounds").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("pound")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("pound").pop());
+  //     } else if (myRecipe.ingredients[index].includes("packages")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("packages").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("package")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("package").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("teaspoons")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("teaspoons").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("teaspoon")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("teaspoon").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("cloves")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("cloves").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("clove")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("clove").pop());
+  //     } else if (myRecipe.ingredients[index].includes("tablespoons")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("tablespoons").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("tablespoon")) {
+  //       cleanIngredients.push(
+  //         myRecipe.ingredients[index].split("tablespoon").pop()
+  //       );
+  //     } else if (myRecipe.ingredients[index].includes("1")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("1").pop());
+  //     } else if (myRecipe.ingredients[index].includes("2")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("2").pop());
+  //     } else if (myRecipe.ingredients[index].includes("3")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("3").pop());
+  //     } else if (myRecipe.ingredients[index].includes("4")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("4").pop());
+  //     } else if (myRecipe.ingredients[index].includes("5")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("5").pop());
+  //     } else if (myRecipe.ingredients[index].includes("6")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("6").pop());
+  //     } else if (myRecipe.ingredients[index].includes("7")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("7").pop());
+  //     } else if (myRecipe.ingredients[index].includes("8")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("8").pop());
+  //     } else if (myRecipe.ingredients[index].includes("9")) {
+  //       cleanIngredients.push(myRecipe.ingredients[index].split("9").pop());
+  //     } else {
+  //       cleanIngredients.push(myRecipe.ingredients[index]);
+  //     }
 
-      index++;
-    }
+  //     index++;
+  //   }
 
-    return cleanIngredients;
-  };
+  //   return cleanIngredients;
+  // };
 
   const handleFavorite = (title: string) => {
     if (favorite) {
@@ -193,24 +193,24 @@ export const RecipeCard: FC<recipeCardProps> = ({
     myRecipe.liked = favorite;
   };
 
-  const useStyles = makeStyles({
-    list: {
-      position: "fixed", //or absolute
-      fontSize: "17px",
-      display: "inline-block",
-      textAlign: "left",
-      borderRadius: "10px",
-      border: "2px solid #7C6354",
-      padding: "5px",
-      width: "300px",
-      height: "250px",
-      overflow: "auto",
-      backgroundColor: "white",
-      bottom: "20px",
-      left: "30px",
-    },
-  });
-  const classes = useStyles();
+  // const useStyles = makeStyles({
+  //   list: {
+  //     position: "fixed", //or absolute
+  //     fontSize: "17px",
+  //     display: "inline-block",
+  //     textAlign: "left",
+  //     borderRadius: "10px",
+  //     border: "2px solid #7C6354",
+  //     padding: "5px",
+  //     width: "300px",
+  //     height: "250px",
+  //     overflow: "auto",
+  //     backgroundColor: "white",
+  //     bottom: "20px",
+  //     left: "30px",
+  //   },
+  // });
+  // const classes = useStyles();
 
   return (
     <>
